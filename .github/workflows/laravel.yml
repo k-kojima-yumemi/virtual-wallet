@@ -24,6 +24,8 @@ jobs:
       run: php artisan key:generate
     - name: Sail Up
       run: ./vendor/bin/sail up -d
+    - name: Migration DB
+      run: ./vendor/bin/sail php artisan migrate:fresh --seed
     - name: Test
       run: ./vendor/bin/sail test
     - name: Sail down
