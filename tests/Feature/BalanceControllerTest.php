@@ -13,6 +13,12 @@ class BalanceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(UsageLogSeeder::class);
+    }
+
     /**
      * Seederで流し込まれているユーザーの残高を取得する。
      * UserIdの指定なし(UserId=100)での実行。
@@ -20,7 +26,6 @@ class BalanceControllerTest extends TestCase
      */
     public function test_user_default_balance(): void
     {
-        $this->seed(UsageLogSeeder::class);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
@@ -36,7 +41,6 @@ class BalanceControllerTest extends TestCase
     public function test_user_2_balance(): void
     {
         Config::set(USER_ID_KEY, 2);
-        $this->seed(UsageLogSeeder::class);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
@@ -52,7 +56,6 @@ class BalanceControllerTest extends TestCase
     public function test_user_3_balance(): void
     {
         Config::set(USER_ID_KEY, 3);
-        $this->seed(UsageLogSeeder::class);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
@@ -67,7 +70,6 @@ class BalanceControllerTest extends TestCase
     public function test_user_no_existence_balance(): void
     {
         Config::set(USER_ID_KEY, -1);
-        $this->seed(UsageLogSeeder::class);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
