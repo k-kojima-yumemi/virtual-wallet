@@ -1,0 +1,35 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: shivammathur/setup-php@baf9535ba58ae8ac3a7362d932ca85fc38621a5d
+      with:
+        php-version: '8.1'
+    - uses: actions/checkout@v3
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Generate key
+      run: php artisan key:generate
+    - name: Sail Up
+      run: ./vendor/bin/sail up -d
+    - name: Check containers
+      run: docker compose ps
+    - name: Migration DB
+      run: ./vendor/bin/sail php artisan migrate:fresh --seed
+    - name: Test
+      run: ./vendor/bin/sail test
+    - name: Sail down
+      if: always()
+      run: ./vendor/bin/sail down
