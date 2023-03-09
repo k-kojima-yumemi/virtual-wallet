@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\UsageLog;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\Response as ResponseCodes;
+use Symfony\Component\HttpFoundation\Response;
 
 class ChargeController extends Controller
 {
@@ -13,30 +13,34 @@ class ChargeController extends Controller
         "amount" => ["required", "integer", "numeric", "min:1"]
     ];
 
-    public function charge(Request $request): Response
+    public function charge(Request $request): JsonResponse
     {
         $validator = $this->getValidationFactory()->make($request->all(), $this->validationRules);
-        if($validator->fails()){
-            return response("Invalid request", ResponseCodes::HTTP_BAD_REQUEST);
+        if ($validator->fails()) {
+            return response()
+                ->json(array(
+                    "reason" => "Invalid request.",
+                ), Response::HTTP_BAD_REQUEST);
         }
 
         $userId = intval(config("app.user_id", 100));
         // 新しいUsageLogの作成
         $chargeValue = intval($request->get("amount"));
         $usage = new UsageLog([
-            "user_id"=>$userId,
-            "used_at"=>now(),
-            "changed_amount"=>$chargeValue,
-            "description"=>"チャージ"
+            "user_id" => $userId,
+            "used_at" => now(),
+            "changed_amount" => $chargeValue,
+            "description" => "チャージ"
         ]);
         // UsageLogをDBに保存
         $usage->save();
 
         // 返却値用の残高取得
-        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.)*/
+        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
         $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
-        return response(array(
-            "balance"=>$balance
-        ));
+        return response()
+            ->json(array(
+                "balance" => $balance,
+            ));
     }
 }
