@@ -212,4 +212,8 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /*
+     * User ID
+     */
+    "user_id" => env("USER_ID"),
 ];
