@@ -24,6 +24,8 @@ jobs:
       run: php artisan key:generate
     - name: Sail Up
       run: ./vendor/bin/sail up -d
+    - name: Check containers
+      run: docker compose ps
     - name: Migration DB
       run: ./vendor/bin/sail php artisan migrate:fresh --seed
     - name: Test
