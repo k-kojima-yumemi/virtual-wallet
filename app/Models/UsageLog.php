@@ -15,4 +15,10 @@ class UsageLog extends Model
         return UsageLogFactory::new();
     }
 
+    protected $fillable = [
+        "user_id",
+        "used_at",
+        "changed_amount",
+        "description",
+    ];
 }
