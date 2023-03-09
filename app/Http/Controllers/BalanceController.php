@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\UsageLog;
-use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Http\JsonResponse;
 
 class BalanceController extends Controller
 {
-    #[ArrayShape(["balance" => "int"])]
-    public function getBalance(): array
+    public function getBalance(): JsonResponse
     {
         $userId = intval(config("app.user_id"));
-        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.)*/
+        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
         $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
-        return array(
-            "balance" => intval($balance),
-        );
+        return response()
+            ->json(array(
+                "balance" => intval($balance),
+            ));
     }
 }
