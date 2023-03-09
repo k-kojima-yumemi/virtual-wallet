@@ -13,10 +13,29 @@ class UsageLogSeeder extends Seeder
     public function run(): void
     {
         UsageLog::factory(10)->create();
-        $this->addCase2();
+        $this->addUser2Data();
+        $this->addUser100Data();
     }
 
-    function addCase2(): void
+    function addUser2Data(): void
+    {
+        // ダミーデータの配列
+        // 左から金額、使用目的、日時
+        $data = array(
+            array(2000, "チャージ", "2023-02-04T00:00:00"),
+            array(-100, "チョコレート", "2023-02-05T07:00:00"),
+            array(-800, "ラーメン", "2023-02-05T012:00:00"),
+            array(3000, "チャージ", "2023-02-05T012:00:00"),
+            array(-600, "たこ焼き", "2023-02-05T018:00:00"),
+            array(-200, "チョコレート", "2023-02-08T07:30:00"),
+            array(-600, "たこ焼き", "2023-02-09T12:30:00"),
+            array(-500, "たこ焼き", "2023-02-10T17:30:00"),
+        );
+        // 合計は2200円
+        $this->addData($data, 2);
+    }
+
+    function addUser100Data(): void
     {
         // ダミーデータの配列
         // 左から金額、使用目的、日時
@@ -29,9 +48,15 @@ class UsageLogSeeder extends Seeder
             array(-600, "たこ焼き", "2023-02-02T12:30:00"),
             array(-1000, "ラーメン", "2023-02-02T17:30:00"),
         );
-        foreach ($data as $datum) {
+        // 合計は1700円
+        $this->addData($data, 100);
+    }
+
+    private function addData(array $data_array, int $userId): void
+    {
+        foreach ($data_array as $datum) {
             UsageLog::factory()->create([
-                "user_id" => 2,
+                "user_id" => $userId,
                 "changed_amount" => $datum[0],
                 "description" => $datum[1],
                 "used_at" => $datum[2],
