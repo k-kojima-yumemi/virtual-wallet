@@ -34,6 +34,15 @@ class BalanceControllerTest extends TestCase
             ->assertJson(["balance" => 2200]);
     }
 
+    public function test_user_3_balance(): void
+    {
+        $this->seed(UsageLogSeeder::class);
+        $response = $this->withHeaders(["user_id" => 3])->get("/api/balance");
+        $response
+            ->assertStatus(200)
+            ->assertJson(["balance" => -500]);
+    }
+
     public function test_user_no_existence_balance(): void
     {
         $this->seed(UsageLogSeeder::class);

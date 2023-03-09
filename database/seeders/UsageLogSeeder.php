@@ -14,6 +14,7 @@ class UsageLogSeeder extends Seeder
     {
         UsageLog::factory(10)->create();
         $this->addUser2Data();
+        $this->addUser3Data();
         $this->addUser100Data();
     }
 
@@ -33,6 +34,19 @@ class UsageLogSeeder extends Seeder
         );
         // 合計は2200円
         $this->addData($data, 2);
+    }
+
+    function addUser3Data(): void
+    {
+        // ダミーデータの配列
+        // 左から金額、使用目的、日時
+        $data = array(
+            array(2000, "チャージ", "2023-02-04T00:00:00"),
+            array(-1500, "ラーメン", "2023-02-04T17:00:00"),
+            array(-1000, "ラーメン", "2023-02-05T18:00:00"),
+        );
+        // 合計は-500円
+        $this->addData($data, 3);
     }
 
     function addUser100Data(): void
