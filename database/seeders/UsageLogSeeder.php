@@ -12,6 +12,7 @@ class UsageLogSeeder extends Seeder
      */
     public function run(): void
     {
+        // ここのFactoryではUserId=1のデータを作成している
         UsageLog::factory(10)->create();
         $this->addUser2Data();
         $this->addUser3Data();
@@ -62,7 +63,7 @@ class UsageLogSeeder extends Seeder
             array(-600, "たこ焼き", "2023-02-02T12:30:00"),
             array(-1000, "ラーメン", "2023-02-02T17:30:00"),
         );
-        // 合計は1700円
+        // 金額欄の合計は1700円
         $this->addData($data, 100);
     }
 
