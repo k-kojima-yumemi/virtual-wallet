@@ -210,6 +210,40 @@ class GetUsageLogsControllerTest extends TestCase
     }
 
     /**
+     * FromとToがデータの範囲内の場合にフィルタしているかの確認
+     * @return void
+     */
+    public function test_get_from0221t1200_to0222t1200(): void
+    {
+        $expected = json_decode('
+        {
+          "logs": [
+            {
+              "used_at": "2023-02-01 12:00:00",
+              "changed_amount": -800,
+              "description": "ラーメン"
+            },
+            {
+              "used_at": "2023-02-01 18:00:00",
+              "changed_amount": -600,
+              "description": "たこ焼き"
+            },
+            {
+              "used_at": "2023-02-02 07:30:00",
+              "changed_amount": -200,
+              "description": "アイス"
+            }
+          ]
+        }', true);
+        $this->assertNotNull($expected, "Assumption failed");
+        $request = $this->get("/api/usage_logs?from=2023-02-01T12:00:00&to=2023-02-02T12:00:00");
+        $request
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJson($expected);
+        $this->assertSameSize($expected["logs"], $request->json("logs"));
+    }
+
+    /**
      * From: 2/1 00:00, To: 2/1 12:00の取得(UserId=100)
      * 12:00のデータが入っていないことを確認。
      * FromはInclusiveなので00:00のデータは入っている。
