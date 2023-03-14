@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Http\UserConstant;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
-
-const USER_ID_KEY = "app.user_id";
 
 class BalanceControllerTest extends TestCase
 {
@@ -40,7 +39,7 @@ class BalanceControllerTest extends TestCase
      */
     public function test_user_2_balance(): void
     {
-        Config::set(USER_ID_KEY, 2);
+        Config::set(UserConstant::USER_ID_KEY, 2);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
@@ -55,7 +54,7 @@ class BalanceControllerTest extends TestCase
      */
     public function test_user_3_balance(): void
     {
-        Config::set(USER_ID_KEY, 3);
+        Config::set(UserConstant::USER_ID_KEY, 3);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
@@ -69,7 +68,7 @@ class BalanceControllerTest extends TestCase
      */
     public function test_user_no_existence_balance(): void
     {
-        Config::set(USER_ID_KEY, -1);
+        Config::set(UserConstant::USER_ID_KEY, -1);
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
