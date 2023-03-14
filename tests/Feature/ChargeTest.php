@@ -7,6 +7,7 @@ use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class ChargeTest extends TestCase
@@ -29,7 +30,7 @@ class ChargeTest extends TestCase
     {
         $response = $this->post("/api/charge", [
             "amount" => 1
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 1]);
@@ -50,7 +51,7 @@ class ChargeTest extends TestCase
     {
         $response = $this->post("/api/charge", [
             "amount" => 500
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 500]);
@@ -58,7 +59,7 @@ class ChargeTest extends TestCase
         // 2回目。1000円になるはず。
         $response = $this->post("/api/charge", [
             "amount" => 500
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 1000]);
@@ -78,7 +79,7 @@ class ChargeTest extends TestCase
         Config::set(UserConstant::USER_ID_KEY, 201);
         $response = $this->post("/api/charge", [
             "amount" => 500
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 500]);
@@ -91,7 +92,7 @@ class ChargeTest extends TestCase
         // 2nd charge
         $response = $this->post("/api/charge", [
             "amount" => 1500
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 2000]);
@@ -116,7 +117,7 @@ class ChargeTest extends TestCase
         Config::set(UserConstant::USER_ID_KEY, 2);
         $response = $this->post("/api/charge", [
             "amount" => 1500
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 3700]);
@@ -130,7 +131,7 @@ class ChargeTest extends TestCase
     {
         $response = $this->post("/api/charge", [
             "amount" => "300"
-        ]);
+        ], ["Accept" => "application/json"]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 300]);
@@ -145,8 +146,8 @@ class ChargeTest extends TestCase
     {
         // 実行前の残高。0円のはず。
         $preBalance = $this->getBalanceForUser(100);
-        $response = $this->post("/api/charge");
-        $response->assertStatus(400);
+        $response = $this->post("/api/charge", [], ["Accept" => "application/json"]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertEquals($preBalance, $this->getBalanceForUser(100));
     }
 
@@ -158,8 +159,8 @@ class ChargeTest extends TestCase
     {
         $response = $this->post("/api/charge", [
             "amount" => 0
-        ]);
-        $response->assertStatus(400);
+        ], ["Accept" => "application/json"]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
@@ -171,8 +172,8 @@ class ChargeTest extends TestCase
     {
         $response = $this->post("/api/charge", [
             "amount" => -1
-        ]);
-        $response->assertStatus(400);
+        ], ["Accept" => "application/json"]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
@@ -183,8 +184,8 @@ class ChargeTest extends TestCase
     {
         $response = $this->post("/api/charge", [
             "amount" => "Hey"
-        ]);
-        $response->assertStatus(400);
+        ], ["Accept" => "application/json"]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
 }

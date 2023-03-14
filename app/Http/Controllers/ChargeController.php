@@ -6,7 +6,7 @@ use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Validation\ValidationException;
 
 class ChargeController extends Controller
 {
@@ -14,19 +14,17 @@ class ChargeController extends Controller
         "amount" => ["required", "integer", "numeric", "min:1"]
     ];
 
+    /**
+     * @throws ValidationException
+     */
     public function charge(Request $request): JsonResponse
     {
-        $validator = $this->getValidationFactory()->make($request->all(), $this->validationRules);
-        if ($validator->fails()) {
-            return response()
-                ->json(array(
-                    "reason" => "Invalid request.",
-                ), Response::HTTP_BAD_REQUEST);
-        }
+        // バリデーション。失敗するとここで422か302が返される。
+        $validatedData = $this->validate($request, $this->validationRules);
 
         $userId = intval(config(UserConstant::USER_ID_KEY));
         // 新しいUsageLogの作成
-        $chargeValue = intval($request->get("amount"));
+        $chargeValue = intval($validatedData["amount"]);
         $usage = new UsageLog([
             "user_id" => $userId,
             "used_at" => now(),
