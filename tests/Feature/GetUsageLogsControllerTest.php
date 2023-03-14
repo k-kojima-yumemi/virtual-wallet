@@ -369,4 +369,13 @@ class GetUsageLogsControllerTest extends TestCase
             ->assertJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
+
+    /**
+     * 無効な日付の場合
+     */
+    public function test_invalid_from_date(): void
+    {
+        $request = $this->getJson("/api/usage_logs?from=hey");
+        $request->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }
