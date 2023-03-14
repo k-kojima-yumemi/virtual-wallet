@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\BalanceController;
+use App\Http\Controllers\UseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post("charge", [ChargeController::class, "charge"]);
 Route::get("balance", [BalanceController::class, "getBalance"]);
+Route::post("use", [UseController::class, "use"]);
