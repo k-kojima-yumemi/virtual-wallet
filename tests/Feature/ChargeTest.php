@@ -28,9 +28,9 @@ class ChargeTest extends TestCase
      */
     public function test_charge_user_default_once(): void
     {
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 1
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 1]);
@@ -49,17 +49,17 @@ class ChargeTest extends TestCase
      */
     public function test_charge_user_default_twice(): void
     {
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 500
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 500]);
 
         // 2回目。1000円になるはず。
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 500
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 1000]);
@@ -77,9 +77,9 @@ class ChargeTest extends TestCase
         $this->seed(UsageLogSeeder::class);
         // seederでは201番のユーザーは追加していないのでこの番号を使用してテストする
         Config::set(UserConstant::USER_ID_KEY, 201);
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 500
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 500]);
@@ -90,9 +90,9 @@ class ChargeTest extends TestCase
         $this->assertEquals("チャージ", $log->description);
 
         // 2nd charge
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 1500
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 2000]);
@@ -115,9 +115,9 @@ class ChargeTest extends TestCase
         // User 2は元々2200円残高がある
         $this->seed(UsageLogSeeder::class);
         Config::set(UserConstant::USER_ID_KEY, 2);
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 1500
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 3700]);
@@ -129,9 +129,9 @@ class ChargeTest extends TestCase
      */
     public function test_amount_string_number(): void
     {
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => "300"
-        ], ["Accept" => "application/json"]);
+        ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 300]);
@@ -146,7 +146,7 @@ class ChargeTest extends TestCase
     {
         // 実行前の残高。0円のはず。
         $preBalance = $this->getBalanceForUser(100);
-        $response = $this->post("/api/charge", [], ["Accept" => "application/json"]);
+        $response = $this->postJson("/api/charge");
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->assertEquals($preBalance, $this->getBalanceForUser(100));
     }
@@ -157,9 +157,9 @@ class ChargeTest extends TestCase
      */
     public function test_amount_0(): void
     {
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => 0
-        ], ["Accept" => "application/json"]);
+        ]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -170,9 +170,9 @@ class ChargeTest extends TestCase
      */
     public function test_amount_minus(): void
     {
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => -1
-        ], ["Accept" => "application/json"]);
+        ]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
@@ -182,9 +182,9 @@ class ChargeTest extends TestCase
      */
     public function test_amount_string(): void
     {
-        $response = $this->post("/api/charge", [
+        $response = $this->postJson("/api/charge", [
             "amount" => "Hey"
-        ], ["Accept" => "application/json"]);
+        ]);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
