@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\UsageLog;
+use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
@@ -65,7 +66,7 @@ class ChargeTest extends TestCase
      */
     public function test_charge_user_201(): void
     {
-        $this->seed();
+        $this->seed(UsageLogSeeder::class);
         // seederでは201番のユーザーは追加していないのでこの番号を使用してテストする
         Config::set(USER_ID_KEY, 201);
         $response = $this->post("/api/charge", [
@@ -90,9 +91,9 @@ class ChargeTest extends TestCase
 
         // 別ユーザーのDBに変更がないか確認
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(0, UsageLog::where("user_id", 100)->sum("changed_amount"));
+        $this->assertEquals(1700, UsageLog::where("user_id", 100)->sum("changed_amount"));
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(1700, UsageLog::where("user_id", 2)->sum("changed_amount"));
+        $this->assertEquals(2200, UsageLog::where("user_id", 2)->sum("changed_amount"));
     }
 
     /**
@@ -104,15 +105,15 @@ class ChargeTest extends TestCase
     public function test_charge_user_2(): void
     {
         // DBの内容に追記した際にも正常動作することを確認
-        // User 2は元々1700円残高がある
-        $this->seed();
+        // User 2は元々2200円残高がある
+        $this->seed(UsageLogSeeder::class);
         Config::set(USER_ID_KEY, 2);
         $response = $this->post("/api/charge", [
             "amount" => 1500
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 3200]);
+            ->assertJson(["balance" => 3700]);
     }
 
     /**
