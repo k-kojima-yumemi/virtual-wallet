@@ -13,6 +13,12 @@ class ChargeTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function getBalanceForUser(int $userId): int
+    {
+        /** @noinspection PhpUndefinedMethodInspection */
+        return UsageLog::where("user_id", $userId)->sum("changed_amount");
+    }
+
     /**
      * UserIdの指定なしでチャージを1回行う。
      * Seederの実行はないので初期値は0。
@@ -49,13 +55,15 @@ class ChargeTest extends TestCase
             ->assertStatus(200)
             ->assertJson(["balance" => 500]);
 
-        // Second trial, balance must be 1000.
+        // 2回目。1000円になるはず。
         $response = $this->post("/api/charge", [
             "amount" => 500
         ]);
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 1000]);
+        // 実際の残高が1000円になっていることを確認。
+        $this->assertEquals(1000, $this->getBalanceForUser(100));
     }
 
     /**
@@ -89,10 +97,9 @@ class ChargeTest extends TestCase
             ->assertJson(["balance" => 2000]);
 
         // 別ユーザーのDBに変更がないか確認
+        $this->assertEquals(1700, $this->getBalanceForUser(100));
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(1700, UsageLog::where("user_id", 100)->sum("changed_amount"));
-        /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(2200, UsageLog::where("user_id", 2)->sum("changed_amount"));
+        $this->assertEquals(2200, $this->getBalanceForUser(2));
     }
 
     /**
@@ -131,12 +138,16 @@ class ChargeTest extends TestCase
 
     /**
      * Bodyがない場合にエラー
+     * 残高が変わっていないことを確認。
      * @return void
      */
     public function test_no_body(): void
     {
+        // 実行前の残高。0円のはず。
+        $preBalance = $this->getBalanceForUser(100);
         $response = $this->post("/api/charge");
         $response->assertStatus(400);
+        $this->assertEquals($preBalance, $this->getBalanceForUser(100));
     }
 
     /**
