@@ -2,13 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
-
-const USER_ID_KEY = "app.user_id";
 
 class ChargeTest extends TestCase
 {
@@ -68,7 +67,7 @@ class ChargeTest extends TestCase
     {
         $this->seed(UsageLogSeeder::class);
         // seederでは201番のユーザーは追加していないのでこの番号を使用してテストする
-        Config::set(USER_ID_KEY, 201);
+        Config::set(UserConstant::USER_ID_KEY, 201);
         $response = $this->post("/api/charge", [
             "amount" => 500
         ]);
@@ -107,7 +106,7 @@ class ChargeTest extends TestCase
         // DBの内容に追記した際にも正常動作することを確認
         // User 2は元々2200円残高がある
         $this->seed(UsageLogSeeder::class);
-        Config::set(USER_ID_KEY, 2);
+        Config::set(UserConstant::USER_ID_KEY, 2);
         $response = $this->post("/api/charge", [
             "amount" => 1500
         ]);

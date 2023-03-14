@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class ChargeController extends Controller
                 ), Response::HTTP_BAD_REQUEST);
         }
 
-        $userId = intval(config("app.user_id", 100));
+        $userId = intval(config(UserConstant::USER_ID_KEY));
         // 新しいUsageLogの作成
         $chargeValue = intval($request->get("amount"));
         $usage = new UsageLog([
