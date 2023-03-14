@@ -149,6 +149,24 @@ class UseControllerTest extends TestCase
     }
 
     /**
+     * 残高0円のUserId=201が使用する。
+     * もともと0円なので400
+     * @return void
+     */
+    public function test_user_201_use(): void
+    {
+        Config::set("app.user_id", 201);
+        $response = $this->postJson("/api/use", array(
+            "amount" => 700,
+            "description" => "test_user_201_use",
+        ));
+        $response
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJson(array("message" => "残高がマイナスです。チャージしてください。"));
+        $this->assertEquals(0, $this->getBalanceForUser(201));
+    }
+
+    /**
      * dataなし
      */
     public function test_no_data(): void
