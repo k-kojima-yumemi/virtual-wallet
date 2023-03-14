@@ -44,6 +44,7 @@ services:
             test: "mysqladmin ping -p${DB_PASSWORD}"
             retries: 3
             timeout: 5s
+            interval: '${COMPOSE_HEALTHCHECK_INTERVAL:-30s}'
 networks:
     sail:
         driver: bridge

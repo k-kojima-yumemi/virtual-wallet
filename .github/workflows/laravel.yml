@@ -41,6 +41,8 @@ jobs:
           WWWGROUP=${{ env.WWWGROUP }}
     - name: Sail Up
       run: ./vendor/bin/sail up -d
+      env:
+        COMPOSE_HEALTHCHECK_INTERVAL: 3s
     - name: Check containers
       run: docker compose ps
     - name: Migration DB
