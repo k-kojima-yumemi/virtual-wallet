@@ -248,7 +248,7 @@ class GetUsageLogsControllerTest extends TestCase
      * 12:00のデータが入っていないことを確認。
      * FromはInclusiveなので00:00のデータは入っている。
      */
-    public function test_get_from0221T0000_to0221T1200(): void
+    public function test_get_from0221t0000_to0221t1200(): void
     {
         $expected = json_decode('
         {
@@ -277,7 +277,7 @@ class GetUsageLogsControllerTest extends TestCase
      * To: 2/1 12:00の取得(UserId=100)
      * Toのみの指定
      */
-    public function test_get_to0221T1200(): void
+    public function test_get_to0221t1200(): void
     {
         $expected = json_decode('
         {
@@ -306,7 +306,7 @@ class GetUsageLogsControllerTest extends TestCase
      * From: 2/2 7:30の取得(UserId=100)
      * Toのみの指定
      */
-    public function test_get_from0221T1200(): void
+    public function test_get_from0221t1200(): void
     {
         $expected = json_decode('
         {
@@ -340,7 +340,7 @@ class GetUsageLogsControllerTest extends TestCase
      * From: 2/1 00:00, To: 2/1 12:01の取得(UserId=100)
      * 12:00のデータが入っていることを確認
      */
-    public function test_get_from0221T0000_to0221T1201(): void
+    public function test_get_from0221t0000_to0221t1201(): void
     {
         $expected = json_decode('
         {
