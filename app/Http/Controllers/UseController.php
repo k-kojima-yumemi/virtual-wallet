@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UsageLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class UseController extends Controller
@@ -14,16 +15,14 @@ class UseController extends Controller
         "description" => ["required", "string"],
     ];
 
+    /**
+     * @throws ValidationException
+     */
     public function use(Request $request): JsonResponse
     {
-        // 入力値のチェック。要件を満たしていない場合は400
-        $validator = $this->getValidationFactory()->make($request->all(), $this->validationRules);
-        if ($validator->fails()) {
-            return response()
-                ->json(array(
-                    "message" => "Invalid request.",
-                ), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        // 入力値のチェック。要件を満たしていない場合は422
+        $validated = $this->validate($request, $this->validationRules);
+
         $userId = intval(config("app.user_id"));
         /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
         $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
@@ -36,12 +35,12 @@ class UseController extends Controller
         }
 
         // 使用できる。ログをDBに残す。
-        $useValue = intval($request->get("amount"));
+        $useValue = intval($validated["amount"]);
         $usage = new UsageLog([
             "user_id" => $userId,
             "used_at" => now(),
             "changed_amount" => -$useValue,
-            "description" => $request->get("description"),
+            "description" => $validated["description"],
         ]);
         // UsageLogをDBに保存
         $usage->save();
