@@ -36,18 +36,18 @@ class UseController extends Controller
         }
 
         // 使用できる。ログをDBに残す。
-        $chargeValue = intval($request->get("amount"));
+        $useValue = intval($request->get("amount"));
         $usage = new UsageLog([
             "user_id" => $userId,
             "used_at" => now(),
-            "changed_amount" => -$chargeValue,
+            "changed_amount" => -$useValue,
             "description" => $request->get("description"),
         ]);
         // UsageLogをDBに保存
         $usage->save();
 
         // 使用後の残高の計算。
-        $newBalance = $balance - $chargeValue;
+        $newBalance = $balance - $useValue;
         $returnValue = array(
             "balance" => $newBalance
         );
