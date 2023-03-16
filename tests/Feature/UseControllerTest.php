@@ -7,20 +7,12 @@ use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class UseControllerTest extends TestCase
 {
     use RefreshDatabase;
-
-    private function getBalanceForUser(int $userId): int
-    {
-        return DB::table("usage_logs")
-            ->where("user_id", $userId)
-            ->sum("changed_amount");
-    }
 
     /**
      * "test_post"という目的で700円使用する。
@@ -49,7 +41,7 @@ class UseControllerTest extends TestCase
         // Assumption to get the record inserted by above code.
         $this->assertEquals("test_post", $lastRecord->description, "test assumption");
         $this->assertEquals(-700, $lastRecord->changed_amount);
-        $this->assertEquals(1000, $this->getBalanceForUser(100));
+        $this->assertEquals(1000, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -75,7 +67,7 @@ class UseControllerTest extends TestCase
             ->assertJsonMissingExact(array(
                 "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
-        $this->assertEquals(1, $this->getBalanceForUser(100));
+        $this->assertEquals(1, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -99,7 +91,7 @@ class UseControllerTest extends TestCase
                 "balance" => 0,
                 "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
-        $this->assertEquals(0, $this->getBalanceForUser(100));
+        $this->assertEquals(0, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -123,7 +115,7 @@ class UseControllerTest extends TestCase
                 "balance" => -1,
                 "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
-        $this->assertEquals(-1, $this->getBalanceForUser(100));
+        $this->assertEquals(-1, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -136,7 +128,7 @@ class UseControllerTest extends TestCase
     {
         Config::set("app.user_id", 3);
         $this->seed(UsageLogSeeder::class);
-        $balance = $this->getBalanceForUser(3);
+        $balance = UsageLog::getUserBalance(3);
         $this->assertLessThan(0, $balance, "test assumption");
         $response = $this->postJson("/api/use", array(
             "amount" => 700,
@@ -146,7 +138,7 @@ class UseControllerTest extends TestCase
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE));
         // 残高が変わっていないことを確認。
-        $this->assertEquals($balance, $this->getBalanceForUser(3));
+        $this->assertEquals($balance, UsageLog::getUserBalance(3));
     }
 
     /**
@@ -164,7 +156,7 @@ class UseControllerTest extends TestCase
         $response
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE));
-        $this->assertEquals(0, $this->getBalanceForUser(201));
+        $this->assertEquals(0, UsageLog::getUserBalance(201));
     }
 
     /**

@@ -15,12 +15,6 @@ class ChargeTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function getBalanceForUser(int $userId): int
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return UsageLog::where("user_id", $userId)->sum("changed_amount");
-    }
-
     /**
      * UserIdの指定なしでチャージを1回行う。
      * Seederの実行はないので初期値は0。
@@ -65,7 +59,7 @@ class ChargeTest extends TestCase
             ->assertStatus(200)
             ->assertJson(["balance" => 1000]);
         // 実際の残高が1000円になっていることを確認。
-        $this->assertEquals(1000, $this->getBalanceForUser(100));
+        $this->assertEquals(1000, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -99,9 +93,8 @@ class ChargeTest extends TestCase
             ->assertJson(["balance" => 2000]);
 
         // 別ユーザーのDBに変更がないか確認
-        $this->assertEquals(1700, $this->getBalanceForUser(100));
-        /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(2200, $this->getBalanceForUser(2));
+        $this->assertEquals(1700, UsageLog::getUserBalance(100));
+        $this->assertEquals(2200, UsageLog::getUserBalance(2));
     }
 
     /**
@@ -116,6 +109,7 @@ class ChargeTest extends TestCase
         // User 2は元々2200円残高がある
         $this->seed(UsageLogSeeder::class);
         Config::set(UserConstant::USER_ID_KEY, 2);
+        $this->assertEquals(2200, UsageLog::getUserBalance(2), "test assumption");
         $response = $this->postJson("/api/charge", [
             "amount" => 1500
         ]);
@@ -198,10 +192,10 @@ class ChargeTest extends TestCase
     public function test_no_body(): void
     {
         // 実行前の残高。0円のはず。
-        $preBalance = $this->getBalanceForUser(100);
+        $preBalance = UsageLog::getUserBalance(100);
         $response = $this->postJson("/api/charge");
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $this->assertEquals($preBalance, $this->getBalanceForUser(100));
+        $this->assertEquals($preBalance, UsageLog::getUserBalance(100));
     }
 
     /**
