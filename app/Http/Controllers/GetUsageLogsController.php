@@ -28,7 +28,7 @@ class GetUsageLogsController extends Controller
         if (array_key_exists("to", $validated)) {
             $query = $query->where("used_at", "<", $validated["to"]);
         }
-        $logs = $query->get(["id", "used_at", "changed_amount", "description"]);
+        $logs = $query->get(["used_at", "changed_amount", "description"]);
         return response()
             ->json(array(
                 "logs" => $logs,

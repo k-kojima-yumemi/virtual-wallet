@@ -21,12 +21,11 @@ class GetUsageLogsControllerTest extends TestCase
     /**
      * デフォルト(UserId=100)の全履歴の取得。
      * Seederの結果とあっているか、欲しいキーは存在しているか確認する。
-     * キーはid, used_at, changed_amount, description
+     * キーはused_at, changed_amount, description
      * @return void
      */
     public function test_default_user_get(): void
     {
-        // "id"は一旦無視する。値が変化するため。
         $expected = json_decode('
         {
           "logs": [
@@ -71,11 +70,8 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
-        // Idのキーがあることを確認
-        foreach ($request->json("logs") as $value) {
-            $this->assertArrayHasKey("id", $value);
-        }
+            ->assertExactJson($expected);
+
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -153,7 +149,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -205,7 +201,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs?from=2023-02-01T00:00:00&to=2023-02-02T00:00:00");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -239,7 +235,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs?from=2023-02-01T12:00:00&to=2023-02-02T12:00:00");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -269,7 +265,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs?from=2023-02-01T00:00:00&to=2023-02-01T12:00:00");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -298,7 +294,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs?to=2023-02-01T12:00:00");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -332,7 +328,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs?from=2023-02-02T07:30:00");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
@@ -366,7 +362,7 @@ class GetUsageLogsControllerTest extends TestCase
         $request = $this->get("/api/usage_logs?from=2023-02-01T00:00:00&to=2023-02-01T12:01:00");
         $request
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson($expected);
+            ->assertExactJson($expected);
         $this->assertSameSize($expected["logs"], $request->json("logs"));
     }
 
