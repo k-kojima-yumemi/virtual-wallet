@@ -40,8 +40,7 @@ class ChargeController extends Controller
         Log::debug("Charged", ["user" => $userId, "amount" => $chargeValue,]);
 
         // 返却値用の残高取得
-        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
-        $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
+        $balance = UsageLog::getUserBalance($userId);
         $returnValue = array(
             "balance" => $balance,
         );
