@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\ConstMessages;
 use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
@@ -38,7 +39,7 @@ class ChargeTest extends TestCase
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
         $log = UsageLog::firstWhere("user_id", 100);
-        $this->assertEquals("チャージ", $log->description);
+        $this->assertEquals(ConstMessages::CHARGE_DESCRIPTION, $log->description);
 
     }
 
@@ -87,7 +88,7 @@ class ChargeTest extends TestCase
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
         $log = UsageLog::firstWhere("user_id", 201);
-        $this->assertEquals("チャージ", $log->description);
+        $this->assertEquals(ConstMessages::CHARGE_DESCRIPTION, $log->description);
 
         // 2nd charge
         $response = $this->postJson("/api/charge", [
@@ -138,7 +139,7 @@ class ChargeTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 500])
-            ->assertJsonMissingExact(["message" => "チャージしてください"]);
+            ->assertJsonMissingExact(["message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
     }
 
     /**
@@ -155,7 +156,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 0, "message" => "チャージしてください"]);
+            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
     }
 
     /**
@@ -172,7 +173,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => -1, "message" => "チャージしてください"]);
+            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
     }
 
     /**

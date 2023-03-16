@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ConstMessages;
 use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Illuminate\Http\JsonResponse;
@@ -29,7 +30,7 @@ class ChargeController extends Controller
             "user_id" => $userId,
             "used_at" => now(),
             "changed_amount" => $chargeValue,
-            "description" => "チャージ"
+            "description" => ConstMessages::CHARGE_DESCRIPTION,
         ]);
         // UsageLogをDBに保存
         $usage->save();
@@ -42,7 +43,7 @@ class ChargeController extends Controller
         );
         // チャージ後の残高がマイナスならチャージを促すメッセージを入れる。
         if ($balance <= 0) {
-            $returnValue["message"] = "チャージしてください";
+            $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_MESSAGE;
         }
         return response()
             ->json($returnValue);

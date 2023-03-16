@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\ConstMessages;
 use App\Models\UsageLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class UsageLogFactory extends Factory
     public function definition(): array
     {
         $changeAmount = fake()->numberBetween(-10000, 10000);
-        $description = $changeAmount > 0 ? "チャージ" : fake()->randomElement(["ラーメン", "たこ焼き", "アイス"]);
+        $description = $changeAmount > 0 ? ConstMessages::CHARGE_DESCRIPTION : fake()->randomElement(["ラーメン", "たこ焼き", "アイス"]);
         return [
             "user_id" => 1,
             "used_at" => now(),

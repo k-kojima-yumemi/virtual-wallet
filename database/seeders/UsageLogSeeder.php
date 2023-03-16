@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\ConstMessages;
 use App\Models\UsageLog;
 use Illuminate\Database\Seeder;
 
@@ -24,10 +25,10 @@ class UsageLogSeeder extends Seeder
         // ダミーデータの配列
         // 左から金額、使用目的、日時
         $data = array(
-            array(2000, "チャージ", "2023-02-04T00:00:00"),
+            array(2000, ConstMessages::CHARGE_DESCRIPTION, "2023-02-04T00:00:00"),
             array(-100, "チョコレート", "2023-02-05T07:00:00"),
             array(-800, "ラーメン", "2023-02-05T012:00:00"),
-            array(3000, "チャージ", "2023-02-05T012:00:00"),
+            array(3000, ConstMessages::CHARGE_DESCRIPTION, "2023-02-05T012:00:00"),
             array(-600, "たこ焼き", "2023-02-05T018:00:00"),
             array(-200, "チョコレート", "2023-02-08T07:30:00"),
             array(-600, "たこ焼き", "2023-02-09T12:30:00"),
@@ -42,7 +43,7 @@ class UsageLogSeeder extends Seeder
         // ダミーデータの配列
         // 左から金額、使用目的、日時
         $data = array(
-            array(2000, "チャージ", "2023-02-04T00:00:00"),
+            array(2000, ConstMessages::CHARGE_DESCRIPTION, "2023-02-04T00:00:00"),
             array(-1500, "ラーメン", "2023-02-04T17:00:00"),
             array(-1000, "ラーメン", "2023-02-05T18:00:00"),
         );
@@ -55,7 +56,7 @@ class UsageLogSeeder extends Seeder
         // ダミーデータの配列
         // 左から金額、使用目的、日時
         $data = array(
-            array(5000, "チャージ", "2023-02-01T00:00:00"),
+            array(5000, ConstMessages::CHARGE_DESCRIPTION, "2023-02-01T00:00:00"),
             array(-100, "アイス", "2023-02-01T07:00:00"),
             array(-800, "ラーメン", "2023-02-01T012:00:00"),
             array(-600, "たこ焼き", "2023-02-01T018:00:00"),
