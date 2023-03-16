@@ -48,7 +48,7 @@ class UseControllerTest extends TestCase
         $lastRecord = UsageLog::orderBy('id', 'DESC')->first();
 
         // Assumption to get the record inserted by above code.
-        $this->assertEquals("test_post", $lastRecord->description, "test assumption");
+        $this->assertEquals("test_post", $lastRecord->description, "Assumption failed");
         $this->assertEquals(-700, $lastRecord->changed_amount);
         $this->assertEquals(1000, $this->getBalanceForUser(100));
     }
@@ -138,7 +138,7 @@ class UseControllerTest extends TestCase
         Config::set(UserConstant::USER_ID_KEY, 3);
         $this->seed(UsageLogSeeder::class);
         $balance = $this->getBalanceForUser(3);
-        $this->assertLessThan(0, $balance, "test assumption");
+        $this->assertLessThan(0, $balance, "Assumption failed");
         $response = $this->postJson("/api/use", array(
             "amount" => 700,
             "description" => "test_post",
