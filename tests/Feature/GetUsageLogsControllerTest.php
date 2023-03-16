@@ -304,7 +304,7 @@ class GetUsageLogsControllerTest extends TestCase
 
     /**
      * From: 2/2 7:30の取得(UserId=100)
-     * Toのみの指定
+     * Fromのみの指定
      */
     public function test_get_from0221t1200(): void
     {
