@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\BalanceController;
-use App\Http\Controllers\UseController;
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\GetUsageLogsController;
+use App\Http\Controllers\UseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
