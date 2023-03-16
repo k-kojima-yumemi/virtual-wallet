@@ -37,9 +37,14 @@ class ChargeController extends Controller
         // 返却値用の残高取得
         /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
         $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
+        $returnValue = array(
+            "balance" => $balance,
+        );
+        // チャージ後の残高がマイナスならチャージを促すメッセージを入れる。
+        if ($balance <= 0) {
+            $returnValue["message"] = "チャージしてください";
+        }
         return response()
-            ->json(array(
-                "balance" => $balance,
-            ));
+            ->json($returnValue);
     }
 }

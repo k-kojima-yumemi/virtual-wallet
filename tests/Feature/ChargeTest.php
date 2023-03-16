@@ -124,6 +124,58 @@ class ChargeTest extends TestCase
     }
 
     /**
+     * UserId=3でチャージし、残高がプラスならチャージのメッセージが入っていないことを確認
+     */
+    public function test_charge_user_3_plus(): void
+    {
+        // User3は-500円の残高
+        $this->seed(UsageLogSeeder::class);
+        Config::set(UserConstant::USER_ID_KEY, 3);
+
+        $response = $this->postJson("/api/charge", [
+            "amount" => 1000,
+        ]);
+        $response
+            ->assertStatus(200)
+            ->assertJson(["balance" => 500])
+            ->assertJsonMissingExact(["message" => "チャージしてください"]);
+    }
+
+    /**
+     * UserId=3で残高が0になる場合チャージのメッセージが含まれる。
+     */
+    public function test_charge_user_3_zero(): void
+    {
+        // User3は-500円の残高
+        $this->seed(UsageLogSeeder::class);
+        Config::set(UserConstant::USER_ID_KEY, 3);
+
+        $response = $this->postJson("/api/charge", [
+            "amount" => 500,
+        ]);
+        $response
+            ->assertStatus(200)
+            ->assertJson(["balance" => 0, "message" => "チャージしてください"]);
+    }
+
+    /**
+     * UserId=3で残高がマイナスになる場合チャージのメッセージが含まれる。
+     */
+    public function test_charge_user_3_minus(): void
+    {
+        // User3は-500円の残高
+        $this->seed(UsageLogSeeder::class);
+        Config::set(UserConstant::USER_ID_KEY, 3);
+
+        $response = $this->postJson("/api/charge", [
+            "amount" => 499,
+        ]);
+        $response
+            ->assertStatus(200)
+            ->assertJson(["balance" => -1, "message" => "チャージしてください"]);
+    }
+
+    /**
      * amountが文字列でも有効な数字であれば受け付けることを確認する。
      * @return void
      */
