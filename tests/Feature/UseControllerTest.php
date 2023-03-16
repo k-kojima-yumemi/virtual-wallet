@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\ConstMessages;
+use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -134,7 +135,7 @@ class UseControllerTest extends TestCase
      */
     public function test_user_3_use(): void
     {
-        Config::set("app.user_id", 3);
+        Config::set(UserConstant::USER_ID_KEY, 3);
         $this->seed(UsageLogSeeder::class);
         $balance = $this->getBalanceForUser(3);
         $this->assertLessThan(0, $balance, "test assumption");
@@ -156,7 +157,7 @@ class UseControllerTest extends TestCase
      */
     public function test_user_201_use(): void
     {
-        Config::set("app.user_id", 201);
+        Config::set(UserConstant::USER_ID_KEY, 201);
         $response = $this->postJson("/api/use", array(
             "amount" => 700,
             "description" => "test_user_201_use",

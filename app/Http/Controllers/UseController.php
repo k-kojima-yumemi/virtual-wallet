@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ConstMessages;
+use App\Http\UserConstant;
 use App\Models\UsageLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class UseController extends Controller
         // 入力値のチェック。要件を満たしていない場合は422
         $validated = $this->validate($request, $this->validationRules);
 
-        $userId = intval(config("app.user_id"));
+        $userId = intval(config(UserConstant::USER_ID_KEY));
         /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
         $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
         // 残高が0円以下なら使用しない。チャージを促して400を返す。

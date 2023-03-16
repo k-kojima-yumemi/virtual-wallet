@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\UserConstant;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
@@ -81,7 +82,7 @@ class GetUsageLogsControllerTest extends TestCase
      */
     public function test_user_201_get(): void
     {
-        Config::set("app.user_id", 201);
+        Config::set(UserConstant::USER_ID_KEY, 201);
         $expected = json_decode('{"logs": []}', true);
         $this->assertNotNull($expected, "Assumption failed");
         $request = $this->get("/api/usage_logs");
@@ -98,7 +99,7 @@ class GetUsageLogsControllerTest extends TestCase
      */
     public function test_user_2_get(): void
     {
-        Config::set("app.user_id", 2);
+        Config::set(UserConstant::USER_ID_KEY, 2);
         $expected = json_decode('
         {
           "logs": [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\UserConstant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,7 @@ class GetUsageLogsController extends Controller
     public function getUsageLogs(Request $request): JsonResponse
     {
         $validated = $this->validate($request, $this->validationRules);
-        $userId = intval(config("app.user_id"));
+        $userId = intval(config(UserConstant::USER_ID_KEY));
         $query = DB::table("usage_logs")->where("user_id", $userId);
         if (array_key_exists("from", $validated)) {
             $query = $query->where("used_at", ">=", $validated["from"]);
