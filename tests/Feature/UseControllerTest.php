@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\ConstMessages;
 use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -72,7 +73,7 @@ class UseControllerTest extends TestCase
                 "balance" => 1,
             ))
             ->assertJsonMissingExact(array(
-                "message" => "チャージしてください",
+                "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
         $this->assertEquals(1, $this->getBalanceForUser(100));
     }
@@ -96,7 +97,7 @@ class UseControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJson(array(
                 "balance" => 0,
-                "message" => "チャージしてください",
+                "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
         $this->assertEquals(0, $this->getBalanceForUser(100));
     }
@@ -120,7 +121,7 @@ class UseControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJson(array(
                 "balance" => -1,
-                "message" => "チャージしてください",
+                "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
         $this->assertEquals(-1, $this->getBalanceForUser(100));
     }
@@ -143,7 +144,7 @@ class UseControllerTest extends TestCase
         ));
         $response
             ->assertStatus(Response::HTTP_BAD_REQUEST)
-            ->assertJson(array("message" => "残高がマイナスです。チャージしてください。"));
+            ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE));
         // 残高が変わっていないことを確認。
         $this->assertEquals($balance, $this->getBalanceForUser(3));
     }
@@ -162,7 +163,7 @@ class UseControllerTest extends TestCase
         ));
         $response
             ->assertStatus(Response::HTTP_BAD_REQUEST)
-            ->assertJson(array("message" => "残高がマイナスです。チャージしてください。"));
+            ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE));
         $this->assertEquals(0, $this->getBalanceForUser(201));
     }
 

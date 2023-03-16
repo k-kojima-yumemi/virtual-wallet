@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ConstMessages;
 use App\Models\UsageLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -30,7 +31,7 @@ class UseController extends Controller
         if ($balance <= 0) {
             return response()
                 ->json(array(
-                    "message" => "残高がマイナスです。チャージしてください。"
+                    "message" => ConstMessages::BALANCE_MINUS_MESSAGE
                 ), Response::HTTP_BAD_REQUEST);
         }
 
@@ -52,7 +53,7 @@ class UseController extends Controller
         );
         // 使用後の残高がマイナスならチャージを促すメッセージを入れる。
         if ($newBalance <= 0) {
-            $returnValue["message"] = "チャージしてください";
+            $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_MESSAGE;
         }
         return response()
             ->json($returnValue);
