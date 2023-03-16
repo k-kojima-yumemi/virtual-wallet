@@ -38,12 +38,9 @@ class UseController extends Controller
 
         // 使用できる。ログをDBに残す。
         $useValue = intval($validated["amount"]);
-        $usage = new UsageLog([
-            "user_id" => $userId,
-            "used_at" => now(),
-            "changed_amount" => -$useValue,
-            "description" => $validated["description"],
-        ]);
+        $usage = UsageLog::create(
+            $userId, now(), -$useValue, $validated["description"]
+        );
         // UsageLogをDBに保存
         $usage->save();
 

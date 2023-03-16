@@ -21,10 +21,10 @@ class UsageLogFactory extends Factory
         $changeAmount = fake()->numberBetween(-10000, 10000);
         $description = $changeAmount > 0 ? ConstMessages::CHARGE_DESCRIPTION : fake()->randomElement(["ラーメン", "たこ焼き", "アイス"]);
         return [
-            "user_id" => 1,
-            "used_at" => now(),
-            "changed_amount" => $changeAmount,
-            "description" => $description,
+            UsageLog::KEY_USER_ID => 1,
+            UsageLog::KEY_USED_AT => now(),
+            UsageLog::KEY_CHANGED_AMOUNT => $changeAmount,
+            UsageLog::KEY_DESCRIPTION => $description,
         ];
     }
 }

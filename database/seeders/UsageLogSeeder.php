@@ -72,10 +72,10 @@ class UsageLogSeeder extends Seeder
     {
         foreach ($data_array as $datum) {
             UsageLog::factory()->create([
-                "user_id" => $userId,
-                "changed_amount" => $datum[0],
-                "description" => $datum[1],
-                "used_at" => $datum[2],
+                UsageLog::KEY_USER_ID => $userId,
+                UsageLog::KEY_CHANGED_AMOUNT => $datum[0],
+                UsageLog::KEY_DESCRIPTION => $datum[1],
+                UsageLog::KEY_USED_AT => $datum[2],
             ]);
         }
     }

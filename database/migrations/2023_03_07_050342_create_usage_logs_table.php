@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\UsageLog;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('usage_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger("user_id");
-            $table->dateTime("used_at");
-            $table->integer("changed_amount");
-            $table->string("description");
+            $table->unsignedInteger(UsageLog::KEY_USER_ID);
+            $table->dateTime(UsageLog::KEY_USED_AT);
+            $table->integer(UsageLog::KEY_CHANGED_AMOUNT);
+            $table->string(UsageLog::KEY_DESCRIPTION);
             $table->timestamps();
         });
     }

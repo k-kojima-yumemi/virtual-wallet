@@ -26,12 +26,9 @@ class ChargeController extends Controller
         $userId = intval(config(UserConstant::USER_ID_KEY));
         // 新しいUsageLogの作成
         $chargeValue = intval($validatedData["amount"]);
-        $usage = new UsageLog([
-            "user_id" => $userId,
-            "used_at" => now(),
-            "changed_amount" => $chargeValue,
-            "description" => ConstMessages::CHARGE_DESCRIPTION,
-        ]);
+        $usage = UsageLog::create(
+            $userId, now(), $chargeValue, ConstMessages::CHARGE_DESCRIPTION
+        );
         // UsageLogをDBに保存
         $usage->save();
 

@@ -38,7 +38,7 @@ class ChargeTest extends TestCase
 
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
-        $log = UsageLog::firstWhere("user_id", 100);
+        $log = UsageLog::firstWhere(UsageLog::KEY_USER_ID, 100);
         $this->assertEquals(ConstMessages::CHARGE_DESCRIPTION, $log->description);
 
     }
@@ -87,7 +87,7 @@ class ChargeTest extends TestCase
 
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
-        $log = UsageLog::firstWhere("user_id", 201);
+        $log = UsageLog::firstWhere(UsageLog::KEY_USER_ID, 201);
         $this->assertEquals(ConstMessages::CHARGE_DESCRIPTION, $log->description);
 
         // 2nd charge
