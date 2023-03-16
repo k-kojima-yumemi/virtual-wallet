@@ -32,6 +32,17 @@ class BalanceControllerTest extends TestCase
     }
 
     /**
+     * レスポンスのbalanceがintであることを確認
+     */
+    public function test_response_has_int(): void
+    {
+        $response = $this->get("/api/balance");
+        $response->assertStatus(200);
+        $balance = $response->json("balance");
+        $this->assertIsInt($balance, "Response is expected to be an Int");
+    }
+
+    /**
      * Seederで流し込まれているユーザーの残高を取得する。
      * UserId=2での実行。
      * 別ユーザーの結果が計算に紛れていないかの確認。

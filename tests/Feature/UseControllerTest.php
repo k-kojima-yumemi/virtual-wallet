@@ -45,6 +45,21 @@ class UseControllerTest extends TestCase
     }
 
     /**
+     * レスポンスのbalanceがintであることを確認
+     */
+    public function test_response_has_int(): void
+    {
+        $this->seed(UsageLogSeeder::class);
+        $response = $this->postJson("/api/use", [
+            "amount" => 1,
+            "description" => __FUNCTION__,
+        ]);
+        $response->assertStatus(200);
+        $balance = $response->json("balance");
+        $this->assertIsInt($balance, "Response is expected to be an Int");
+    }
+
+    /**
      * "test_post"という目的で1699円使用する。
      * UserIdの指定なし(UserId=100)での実行。
      * チャージのメッセージが含まれないことを確認。

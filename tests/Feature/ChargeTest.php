@@ -38,6 +38,19 @@ class ChargeTest extends TestCase
     }
 
     /**
+     * レスポンスのbalanceがintであることを確認
+     */
+    public function test_response_has_int(): void
+    {
+        $response = $this->postJson("/api/charge", [
+            "amount" => 1
+        ]);
+        $response->assertStatus(200);
+        $balance = $response->json("balance");
+        $this->assertIsInt($balance, "Response is expected to be an Int");
+    }
+
+    /**
      * UserIdの指定なしでチャージを2回行う。
      * Seederの実行はないので初期値は0。
      * @return void
