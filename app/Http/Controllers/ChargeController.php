@@ -43,7 +43,7 @@ class ChargeController extends Controller
         );
         // チャージ後の残高がマイナスならチャージを促すメッセージを入れる。
         if ($balance <= 0) {
-            $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_MESSAGE;
+            $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_AFTER_CHARGE_MESSAGE;
         }
         Log::info("Charged", ["user" => $userId, "amount" => $chargeValue, "balance" => $balance]);
 

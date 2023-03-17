@@ -58,7 +58,7 @@ class UseController extends Controller
         );
         // 使用後の残高がマイナスならチャージを促すメッセージを入れる。
         if ($newBalance <= 0) {
-            $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_MESSAGE;
+            $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_AFTER_USE_MESSAGE;
         }
         Log::info("Used", [
             "user" => $userId,

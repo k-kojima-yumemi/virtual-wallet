@@ -133,7 +133,7 @@ class ChargeTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson(["balance" => 500], true)
-            ->assertJsonMissingExact(["message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
+            ->assertJsonMissingExact(["message" => ConstMessages::CHARGE_SUGGESTION_AFTER_CHARGE_MESSAGE]);
     }
 
     /**
@@ -150,7 +150,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE], true);
+            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_AFTER_CHARGE_MESSAGE], true);
     }
 
     /**
@@ -167,7 +167,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE], true);
+            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_AFTER_CHARGE_MESSAGE], true);
     }
 
     /**
