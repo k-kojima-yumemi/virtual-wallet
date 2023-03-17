@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Usage Logs</title>
+    <link href="/all.css" rel="stylesheet">
+</head>
+<body>
+<div class="table-content">
+    <header>
+        使用履歴
+    </header>
+    <table id="usage-table" class="usage-table">
+        <thead>
+        <tr>
+            <th scope="col">使用日時</th>
+            <th scope="col">金額</th>
+            <th scope="col">目的</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<script>
+    const table = document.getElementById("usage-table");
+    const LOG_KEYS = ["used_at", "changed_amount", "description"];
+    fetch("/api/usage_logs")
+        .then(response => {
+            if (!response.ok) {
+                console.log("Caught error " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => data["logs"])
+        .then(logs => logs.forEach(eachLog => {
+            const row = document.createElement("tr");
+            LOG_KEYS.forEach(key => {
+                const cell = document.createElement("td");
+                const cellText = document.createTextNode(eachLog[key]);
+                cell.appendChild(cellText);
+                if (key === "changed_amount") {
+                    cell.setAttribute("align", "right")
+                } else if (key === "description" && cell.textContent === "チャージ") {
+                    // 太字にする
+                    // cell.innerHTML = "<b>チャージ</b>"
+                }
+                row.appendChild(cell);
+            });
+            table.appendChild(row);
+        }))
+</script>
+</body>
+</html>

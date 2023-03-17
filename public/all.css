@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+html {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    background: white;
+    max-width: 500px;
+}
+
+div.center {
+    text-align: center;
+    align-items: center;
+}
+
+div.content {
+    align-items: center;
+    -moz-box-align: center;
+}
+
+div.table-content {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+}
+
+div.wrap {
+    text-align: center;
+    padding: 0.5em;
+}
+
+div.wrap-flex {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5em;
+}
+
+div.inner-flex {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    padding: 0.3em;
+}
+
+div.balance-text {
+    font-size: 60px;
+    padding: 40px 0;
+}
+
+input.circle,
+button.circle {
+    background-color: #4affba;
+    border-radius: 100rem;
+}
+
+input.circle:hover,
+button.circle:hover {
+    background: #99ffd8;
+}
+
+button.circle:disabled {
+    background: #718096;
+}
+
+
+input.btn,
+button.btn {
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.5;
+    width: 200px;
+    position: relative;
+    display: inline-block;
+    padding: 1rem 1rem;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    color: #212529;
+    border: none;
+}
+
+div.form-row {
+    padding: 1em;
+}
+
+header {
+    font-size: 45px;
+    text-align: center;
+}
+
+label {
+    display: inline-block;
+    text-align: left;
+    width: 150px;
+}
+
+table .usage-table {
+    margin: auto;
+    border-spacing: 10px;
+    border-collapse: collapse;
+}
+
+table th {
+    padding: 10px 0;
+    text-align: center;
+    background-color: #696969;
+    color: #fff;
+}
+
+table td {
+    padding: 5px 15px;
+}
+
+table tr:nth-child(odd) {
+    background-color: #eeeeee
+}
+
+table tr:nth-child(even) {
+    background-color: #c8e7fa
+}
