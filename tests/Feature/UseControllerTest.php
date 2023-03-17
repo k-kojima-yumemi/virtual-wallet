@@ -33,7 +33,7 @@ class UseControllerTest extends TestCase
         // レスポンスに残高が正しく含まれていることを確認。
         $response
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson(array("balance" => 1000));
+            ->assertJson(array("balance" => 1000), true);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $lastRecord = UsageLog::orderBy('id', 'DESC')->first();
@@ -136,7 +136,7 @@ class UseControllerTest extends TestCase
         ));
         $response
             ->assertStatus(Response::HTTP_BAD_REQUEST)
-            ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE));
+            ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE), true);
         // 残高が変わっていないことを確認。
         $this->assertEquals($balance, UsageLog::getUserBalance(3));
     }
@@ -155,7 +155,7 @@ class UseControllerTest extends TestCase
         ));
         $response
             ->assertStatus(Response::HTTP_BAD_REQUEST)
-            ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE));
+            ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE), true);
         $this->assertEquals(0, UsageLog::getUserBalance(201));
     }
 

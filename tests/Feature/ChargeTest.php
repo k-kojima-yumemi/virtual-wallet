@@ -28,7 +28,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 1]);
+            ->assertJson(["balance" => 1], true);
 
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
@@ -49,7 +49,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 500]);
+            ->assertJson(["balance" => 500], true);
 
         // 2回目。1000円になるはず。
         $response = $this->postJson("/api/charge", [
@@ -57,7 +57,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 1000]);
+            ->assertJson(["balance" => 1000], true);
         // 実際の残高が1000円になっていることを確認。
         $this->assertEquals(1000, UsageLog::getUserBalance(100));
     }
@@ -77,7 +77,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 500]);
+            ->assertJson(["balance" => 500], true);
 
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
@@ -90,7 +90,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 2000]);
+            ->assertJson(["balance" => 2000], true);
 
         // 別ユーザーのDBに変更がないか確認
         $this->assertEquals(1700, UsageLog::getUserBalance(100));
@@ -115,7 +115,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 3700]);
+            ->assertJson(["balance" => 3700], true);
     }
 
     /**
@@ -132,7 +132,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 500])
+            ->assertJson(["balance" => 500], true)
             ->assertJsonMissingExact(["message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
     }
 
@@ -150,7 +150,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
+            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE], true);
     }
 
     /**
@@ -167,7 +167,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
+            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE], true);
     }
 
     /**
@@ -181,7 +181,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 300]);
+            ->assertJson(["balance" => 300], true);
     }
 
     /**
