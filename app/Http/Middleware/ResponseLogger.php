@@ -25,7 +25,7 @@ class ResponseLogger
             if (str_starts_with($url, "/api")) {
                 $data = json_decode($response->getContent(), true);
                 $status = $response->getStatusCode();
-                Log::debug("response($status) of $url", [
+                Log::info("response($status) of $url", [
                     "response" => $data,
                 ]);
             }

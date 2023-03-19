@@ -14,7 +14,7 @@ class RequestLogger
         if (Config::get("app.enable_request_log")) {
             $uri = $request->getRequestUri();
             $method = $request->method();
-            Log::debug("$uri ($method)", [
+            Log::info("$uri ($method)", [
                 "request" => $request->all(),
             ]);
         }
