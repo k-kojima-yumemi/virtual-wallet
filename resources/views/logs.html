@@ -62,7 +62,9 @@
                     const row = document.createElement("tr");
                     LOG_KEYS.forEach(key => {
                         const cell = document.createElement("td");
-                        const cellText = document.createTextNode(eachLog[key]);
+                        const cellText = document.createTextNode(
+                            key === "used_at" ? convertUTCToLocal(eachLog[key]) : eachLog[key]
+                        );
                         cell.appendChild(cellText);
                         if (key === "changed_amount") {
                             cell.setAttribute("align", "right")
@@ -78,6 +80,21 @@
         });
     }
 
+    function convertUTCToLocal(dateString) {
+        const utcDate = new Date(dateString + "Z");
+        const localDateString = utcDate.toLocaleString(
+            undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            }
+        );
+        return localDateString;
+    }
+
     // Initial filling, no queries
     fetchAndFillTable("");
 
@@ -87,12 +104,15 @@
         const fromDate = document.getElementById("from-date").value;
         const fromTime = document.getElementById("from-time").value || "00:00:00";
         if (fromDate) {
-            query += `&from=${fromDate}T${fromTime}`;
+            const localDate = new Date(fromDate + "T" + fromTime);
+            console.log(localDate.toISOString())
+            query += `&from=${localDate.toISOString()}`;
         }
         const toDate = document.getElementById("to-date").value;
         const toTime = document.getElementById("to-time").value || "23:59:59.9";
         if (toDate) {
-            query += `&to=${toDate}T${toTime}`;
+            const localDate = new Date(toDate + "T" + toTime);
+            query += `&to=${localDate.toISOString()}`;
         }
         fetchAndFillTable(query);
     });
