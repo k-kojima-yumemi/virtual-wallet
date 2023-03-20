@@ -39,9 +39,9 @@ class UseControllerTest extends TestCase
         $lastRecord = UsageLog::orderBy('id', 'DESC')->first();
 
         // Assumption to get the record inserted by above code.
-        $this->assertEquals("test_post", $lastRecord->description, "test assumption");
-        $this->assertEquals(-700, $lastRecord->changed_amount);
-        $this->assertEquals(1000, UsageLog::getUserBalance(100));
+        $this->assertSame("test_post", $lastRecord->description, "test assumption");
+        $this->assertSame(-700, $lastRecord->changed_amount);
+        $this->assertSame(1000, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -67,7 +67,7 @@ class UseControllerTest extends TestCase
             ->assertJsonMissingExact(array(
                 "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
-        $this->assertEquals(1, UsageLog::getUserBalance(100));
+        $this->assertSame(1, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -91,7 +91,7 @@ class UseControllerTest extends TestCase
                 "balance" => 0,
                 "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
-        $this->assertEquals(0, UsageLog::getUserBalance(100));
+        $this->assertSame(0, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -115,7 +115,7 @@ class UseControllerTest extends TestCase
                 "balance" => -1,
                 "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
             ));
-        $this->assertEquals(-1, UsageLog::getUserBalance(100));
+        $this->assertSame(-1, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -138,7 +138,7 @@ class UseControllerTest extends TestCase
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE), true);
         // 残高が変わっていないことを確認。
-        $this->assertEquals($balance, UsageLog::getUserBalance(3));
+        $this->assertSame($balance, UsageLog::getUserBalance(3));
     }
 
     /**
@@ -156,7 +156,7 @@ class UseControllerTest extends TestCase
         $response
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJson(array("message" => ConstMessages::BALANCE_MINUS_MESSAGE), true);
-        $this->assertEquals(0, UsageLog::getUserBalance(201));
+        $this->assertSame(0, UsageLog::getUserBalance(201));
     }
 
     /**

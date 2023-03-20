@@ -18,20 +18,6 @@ class UsageLogTest extends TestCase
     }
 
     /**
-     * UsageLog::getUserBalanceがintを返すことを確認する
-     * 何も入っていないユーザー(99)、残高がマイナスのユーザー(3)、プラスのユーザー(100)で検証
-     *
-     * @dataProvider userIdAndBalance
-     * @param int $userId
-     * @return void
-     */
-    public function test_get_balance_return_type(int $userId): void
-    {
-        $this->assertIsInt(UsageLog::getUserBalance($userId),
-            "User $userId");
-    }
-
-    /**
      * 指定したユーザーの残高が正確に取得できていることを確認する
      * 何も入っていないユーザー(99)、残高がマイナスのユーザー(3)、プラスのユーザー(100)で検証
      *
@@ -42,7 +28,7 @@ class UsageLogTest extends TestCase
      */
     public function test_get_balance(int $userId, int $expectedBalance): void
     {
-        $this->assertEquals($expectedBalance, UsageLog::getUserBalance($userId),
+        $this->assertSame($expectedBalance, UsageLog::getUserBalance($userId),
             "User $userId");
     }
 
