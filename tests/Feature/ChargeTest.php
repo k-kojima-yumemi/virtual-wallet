@@ -15,12 +15,6 @@ class ChargeTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function getBalanceForUser(int $userId): int
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return UsageLog::where("user_id", $userId)->sum("changed_amount");
-    }
-
     /**
      * UserIdの指定なしでチャージを1回行う。
      * Seederの実行はないので初期値は0。
@@ -34,7 +28,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 1]);
+            ->assertJson(["balance" => 1], true);
 
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
@@ -55,7 +49,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 500]);
+            ->assertJson(["balance" => 500], true);
 
         // 2回目。1000円になるはず。
         $response = $this->postJson("/api/charge", [
@@ -63,9 +57,9 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 1000]);
+            ->assertJson(["balance" => 1000], true);
         // 実際の残高が1000円になっていることを確認。
-        $this->assertEquals(1000, $this->getBalanceForUser(100));
+        $this->assertEquals(1000, UsageLog::getUserBalance(100));
     }
 
     /**
@@ -83,7 +77,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 500]);
+            ->assertJson(["balance" => 500], true);
 
         // DB内でdescriptionがチャージになっているか確認
         /** @noinspection PhpUndefinedMethodInspection */
@@ -96,12 +90,11 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 2000]);
+            ->assertJson(["balance" => 2000], true);
 
         // 別ユーザーのDBに変更がないか確認
-        $this->assertEquals(1700, $this->getBalanceForUser(100));
-        /** @noinspection PhpUndefinedMethodInspection */
-        $this->assertEquals(2200, $this->getBalanceForUser(2));
+        $this->assertEquals(1700, UsageLog::getUserBalance(100));
+        $this->assertEquals(2200, UsageLog::getUserBalance(2));
     }
 
     /**
@@ -116,12 +109,13 @@ class ChargeTest extends TestCase
         // User 2は元々2200円残高がある
         $this->seed(UsageLogSeeder::class);
         Config::set(UserConstant::USER_ID_KEY, 2);
+        $this->assertEquals(2200, UsageLog::getUserBalance(2), "test assumption");
         $response = $this->postJson("/api/charge", [
             "amount" => 1500
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 3700]);
+            ->assertJson(["balance" => 3700], true);
     }
 
     /**
@@ -138,7 +132,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 500])
+            ->assertJson(["balance" => 500], true)
             ->assertJsonMissingExact(["message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
     }
 
@@ -156,7 +150,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
+            ->assertJson(["balance" => 0, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE], true);
     }
 
     /**
@@ -173,7 +167,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE]);
+            ->assertJson(["balance" => -1, "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE], true);
     }
 
     /**
@@ -187,7 +181,7 @@ class ChargeTest extends TestCase
         ]);
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 300]);
+            ->assertJson(["balance" => 300], true);
     }
 
     /**
@@ -198,10 +192,10 @@ class ChargeTest extends TestCase
     public function test_no_body(): void
     {
         // 実行前の残高。0円のはず。
-        $preBalance = $this->getBalanceForUser(100);
+        $preBalance = UsageLog::getUserBalance(100);
         $response = $this->postJson("/api/charge");
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $this->assertEquals($preBalance, $this->getBalanceForUser(100));
+        $this->assertEquals($preBalance, UsageLog::getUserBalance(100));
     }
 
     /**

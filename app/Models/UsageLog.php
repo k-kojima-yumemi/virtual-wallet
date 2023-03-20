@@ -21,4 +21,10 @@ class UsageLog extends Model
         "changed_amount",
         "description",
     ];
+
+    public static function getUserBalance(int $userId): int
+    {
+        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
+        return intval(UsageLog::where("user_id", $userId)->sum("changed_amount"));
+    }
 }

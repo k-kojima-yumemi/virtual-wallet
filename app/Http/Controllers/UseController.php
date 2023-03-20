@@ -27,8 +27,7 @@ class UseController extends Controller
 
         $userId = intval(config("app.user_id"));
         Log::info("Start to use", ["user" => $userId,]);
-        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
-        $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
+        $balance = UsageLog::getUserBalance($userId);
         // 残高が0円以下なら使用しない。チャージを促して400を返す。
         if ($balance <= 0) {
             Log::info("Reject use because of insufficient balance", [

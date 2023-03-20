@@ -28,7 +28,7 @@ class BalanceControllerTest extends TestCase
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 1700]);
+            ->assertJson(["balance" => 1700], true);
     }
 
     /**
@@ -43,7 +43,7 @@ class BalanceControllerTest extends TestCase
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 2200]);
+            ->assertJson(["balance" => 2200], true);
     }
 
     /**
@@ -58,7 +58,7 @@ class BalanceControllerTest extends TestCase
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => -500]);
+            ->assertJson(["balance" => -500], true);
     }
 
     /**
@@ -72,6 +72,6 @@ class BalanceControllerTest extends TestCase
         $response = $this->get("/api/balance");
         $response
             ->assertStatus(200)
-            ->assertJson(["balance" => 0]);
+            ->assertJson(["balance" => 0], true);
     }
 }

@@ -37,8 +37,7 @@ class ChargeController extends Controller
         // UsageLogをDBに保存
         $usage->save();
         // 返却値用の残高取得
-        /** @noinspection PhpUndefinedMethodInspection (`where` should be callable.) */
-        $balance = UsageLog::where("user_id", $userId)->sum("changed_amount");
+        $balance = UsageLog::getUserBalance($userId);
         $returnValue = array(
             "balance" => $balance,
         );
