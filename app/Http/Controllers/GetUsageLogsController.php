@@ -20,7 +20,6 @@ class GetUsageLogsController extends Controller
      */
     public function getUsageLogs(Request $request): JsonResponse
     {
-        Log::debug("Validate request of getting logs", ["request" => $request->all()]);
         $validated = $this->validate($request, $this->validationRules);
         $userId = intval(config("app.user_id"));
         Log::info("Start to get usage logs", ["user" => $userId,]);

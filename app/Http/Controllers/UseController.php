@@ -22,7 +22,6 @@ class UseController extends Controller
      */
     public function use(Request $request): JsonResponse
     {
-        Log::debug("Validate request of using", ["request" => $request->all()]);
         // 入力値のチェック。要件を満たしていない場合は422
         $validated = $this->validate($request, $this->validationRules);
 
@@ -52,11 +51,6 @@ class UseController extends Controller
         ]);
         // UsageLogをDBに保存
         $usage->save();
-        Log::debug("Used", [
-            "user" => $userId,
-            "amount" => $useValue,
-            "description" => $validated["description"]
-        ]);
 
         // 使用後の残高の計算。
         $newBalance = $balance - $useValue;
@@ -67,11 +61,11 @@ class UseController extends Controller
         if ($newBalance <= 0) {
             $returnValue["message"] = ConstMessages::CHARGE_SUGGESTION_MESSAGE;
         }
-        Log::info("Return response for using", [
+        Log::info("Used", [
             "user" => $userId,
-            "before" => $balance,
-            "used" => $useValue,
-            "return" => $returnValue,
+            "amount" => $useValue,
+            "balance" => $newBalance,
+            "description" => $validated["description"],
         ]);
         return response()
             ->json($returnValue);
