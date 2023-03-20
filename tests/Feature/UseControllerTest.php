@@ -65,7 +65,7 @@ class UseControllerTest extends TestCase
                 "balance" => 1,
             ))
             ->assertJsonMissingExact(array(
-                "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
+                "message" => ConstMessages::CHARGE_SUGGESTION_AFTER_USE_MESSAGE,
             ));
         $this->assertSame(1, UsageLog::getUserBalance(100));
     }
@@ -89,7 +89,7 @@ class UseControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJson(array(
                 "balance" => 0,
-                "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
+                "message" => ConstMessages::CHARGE_SUGGESTION_AFTER_USE_MESSAGE,
             ));
         $this->assertSame(0, UsageLog::getUserBalance(100));
     }
@@ -113,7 +113,7 @@ class UseControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJson(array(
                 "balance" => -1,
-                "message" => ConstMessages::CHARGE_SUGGESTION_MESSAGE,
+                "message" => ConstMessages::CHARGE_SUGGESTION_AFTER_USE_MESSAGE,
             ));
         $this->assertSame(-1, UsageLog::getUserBalance(100));
     }

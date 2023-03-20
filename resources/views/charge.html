@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Charge</title>
+    <link href="/all.css" rel="stylesheet">
+</head>
+<body>
+<div class="content">
+    <header>
+        チャージ
+    </header>
+    <form class="form-charge" id="charge-form">
+        <div class="form-row center">
+            <label for="amount">チャージする金額</label>
+            <input type="number" name="amount" id="amount" required min="1" placeholder="1000">
+        </div>
+        <div class="form-row center">
+            <input type="submit" value="チャージする" class="btn circle">
+        </div>
+    </form>
+</div>
+
+
+<script>
+    const form = document.getElementById("charge-form");
+    form.addEventListener("submit", e => {
+        e.preventDefault();
+        const inputAmount = document.querySelector("input#amount");
+        const sendData = JSON.stringify({
+            "amount": inputAmount.value
+        });
+        console.log(sendData);
+        fetch("/api/charge", {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+            },
+            "body": sendData,
+        }).then((response) => {
+            if (!response.ok) {
+                console.log("Catch error. " + response.status);
+            }
+            return response.json();
+        }).then((json) => {
+            if ("message" in json) {
+                alert(`${json["message"]}`)
+            }
+        }).finally(() => {
+            document.location.assign("/");
+        });
+    });
+</script>
+</body>
+</html>

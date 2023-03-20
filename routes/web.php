@@ -14,5 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('show_balance');
+});
+Route::get('/charge', function () {
+    return view('charge');
+});
+Route::get('/use', function () {
+    return view('use');
+});
+Route::get('/logs', function () {
+    return view('logs');
 });
