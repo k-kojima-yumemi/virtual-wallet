@@ -43,50 +43,7 @@
     const tableBody = document.getElementById("usage-table-body");
     const LOG_KEYS = ["used_at", "changed_amount", "description"];
 
-    function fillTable(logs) {
-        logs.forEach(eachLog => {
-            const row = document.createElement("tr");
-            LOG_KEYS.forEach(key => {
-                const cell = document.createElement("td");
-                const cellText = document.createTextNode(eachLog[key]);
-                cell.appendChild(cellText);
-                if (key === "changed_amount") {
-                    cell.setAttribute("align", "right")
-                } else if (key === "description" && cell.textContent === "チャージ") {
-                    // 太字にする
-                    // cell.innerHTML = "<b>チャージ</b>"
-                }
-                row.appendChild(cell);
-            });
-            tableBody.appendChild(row);
-        });
-    }
-
-    // Initial filling
-    fetch("/api/usage_logs", {
-        "headers": {
-            "Accept": "application/json",
-        },
-    }).then(response => {
-        if (!response.ok) {
-            console.log("Caught error " + response.status);
-        }
-        return response.json();
-    }).then(data => data["logs"]).then(fillTable);
-
-    const updateButton = document.getElementById("date-update-button");
-    updateButton.addEventListener("click", ignore => {
-        let query = "?";
-        const fromDate = document.getElementById("from-date").value;
-        const fromTime = document.getElementById("from-time").value || "00:00:00";
-        if (fromDate) {
-            query += `&from=${fromDate}T${fromTime}`;
-        }
-        const toDate = document.getElementById("to-date").value;
-        const toTime = document.getElementById("to-time").value || "23:59:59";
-        if (toDate) {
-            query += `&to=${toDate}T${toTime}`;
-        }
+    function fetchAndFillTable(query) {
         fetch("/api/usage_logs" + query, {
             "headers": {
                 "Accept": "application/json",
@@ -101,9 +58,43 @@
                 alert(`${json["message"]}`)
             } else {
                 tableBody.innerHTML = "";
-                fillTable(json["logs"])
+                json["logs"].forEach(eachLog => {
+                    const row = document.createElement("tr");
+                    LOG_KEYS.forEach(key => {
+                        const cell = document.createElement("td");
+                        const cellText = document.createTextNode(eachLog[key]);
+                        cell.appendChild(cellText);
+                        if (key === "changed_amount") {
+                            cell.setAttribute("align", "right")
+                        } else if (key === "description" && cell.textContent === "チャージ") {
+                            // 太字にする
+                            // cell.innerHTML = "<b>チャージ</b>"
+                        }
+                        row.appendChild(cell);
+                    });
+                    tableBody.appendChild(row);
+                });
             }
         });
+    }
+
+    // Initial filling, no queries
+    fetchAndFillTable("");
+
+    const updateButton = document.getElementById("date-update-button");
+    updateButton.addEventListener("click", ignore => {
+        let query = "?";
+        const fromDate = document.getElementById("from-date").value;
+        const fromTime = document.getElementById("from-time").value || "00:00:00";
+        if (fromDate) {
+            query += `&from=${fromDate}T${fromTime}`;
+        }
+        const toDate = document.getElementById("to-date").value;
+        const toTime = document.getElementById("to-time").value || "23:59:59.9";
+        if (toDate) {
+            query += `&to=${toDate}T${toTime}`;
+        }
+        fetchAndFillTable(query);
     });
 </script>
 </body>
