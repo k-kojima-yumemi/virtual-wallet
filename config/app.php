@@ -216,6 +216,6 @@ return [
      * User ID
      */
     "user_id" => env("USER_ID"),
-    "enable_request_log" => boolval(env("ENABLE_REQUEST_LOG", "true")),
-    "enable_response_log" => boolval(env("ENABLE_RESPONSE_LOG", "true")),
+    "enable_request_log" => boolval(env("ENABLE_REQUEST_LOG", true)),
+    "enable_response_log" => boolval(env("ENABLE_RESPONSE_LOG", true)),
 ];
