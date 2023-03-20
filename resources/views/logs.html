@@ -105,7 +105,6 @@
         const fromTime = document.getElementById("from-time").value || "00:00:00";
         if (fromDate) {
             const localDate = new Date(fromDate + "T" + fromTime);
-            console.log(localDate.toISOString())
             query += `&from=${localDate.toISOString()}`;
         }
         const toDate = document.getElementById("to-date").value;
