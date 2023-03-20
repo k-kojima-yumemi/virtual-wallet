@@ -44,6 +44,18 @@ div.inner-flex {
     padding: 0.3em;
 }
 
+div.date-flex {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+}
+
+div.date-content {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+}
+
 div.balance-text {
     font-size: 60px;
     padding: 40px 0;
@@ -86,6 +98,10 @@ button.btn {
     letter-spacing: 0.1em;
     color: #212529;
     border: none;
+}
+
+button.max-width {
+    width: auto;
 }
 
 div.form-row {

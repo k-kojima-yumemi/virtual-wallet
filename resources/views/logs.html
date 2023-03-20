@@ -18,21 +18,33 @@
             <th scope="col">目的</th>
         </tr>
         </thead>
+        <tbody id="usage-table-body"></tbody>
     </table>
+    <div class="date-flex">
+        <div class="date-content">
+            <label for="from-date">From date</label>
+            <input type="date" id="from-date">
+            <label for="from-time">From time</label>
+            <input type="time" id="from-time">
+        </div>
+        <div class="date-content">
+            <label for="to-date">To date</label>
+            <input type="date" id="to-date">
+            <label for="to-time">To time</label>
+            <input type="time" id="to-time">
+        </div>
+    </div>
+    <div class="center wrap">
+        <button class="btn circle max-width" id="date-update-button">日付で絞り込み</button>
+    </div>
 </div>
 
 <script>
-    const table = document.getElementById("usage-table");
+    const tableBody = document.getElementById("usage-table-body");
     const LOG_KEYS = ["used_at", "changed_amount", "description"];
-    fetch("/api/usage_logs")
-        .then(response => {
-            if (!response.ok) {
-                console.log("Caught error " + response.status);
-            }
-            return response.json();
-        })
-        .then(data => data["logs"])
-        .then(logs => logs.forEach(eachLog => {
+
+    function fillTable(logs) {
+        logs.forEach(eachLog => {
             const row = document.createElement("tr");
             LOG_KEYS.forEach(key => {
                 const cell = document.createElement("td");
@@ -46,8 +58,53 @@
                 }
                 row.appendChild(cell);
             });
-            table.appendChild(row);
-        }))
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Initial filling
+    fetch("/api/usage_logs", {
+        "headers": {
+            "Accept": "application/json",
+        },
+    }).then(response => {
+        if (!response.ok) {
+            console.log("Caught error " + response.status);
+        }
+        return response.json();
+    }).then(data => data["logs"]).then(fillTable);
+
+    const updateButton = document.getElementById("date-update-button");
+    updateButton.addEventListener("click", ignore => {
+        let query = "?";
+        const fromDate = document.getElementById("from-date").value;
+        const fromTime = document.getElementById("from-time").value || "00:00:00";
+        if (fromDate) {
+            query += `&from=${fromDate}T${fromTime}`;
+        }
+        const toDate = document.getElementById("to-date").value;
+        const toTime = document.getElementById("to-time").value || "23:59:59";
+        if (toDate) {
+            query += `&to=${toDate}T${toTime}`;
+        }
+        fetch("/api/usage_logs" + query, {
+            "headers": {
+                "Accept": "application/json",
+            },
+        }).then(response => {
+            if (!response.ok) {
+                console.log("Caught error " + response.status);
+            }
+            return response.json();
+        }).then(json => {
+            if ("message" in json) {
+                alert(`${json["message"]}`)
+            } else {
+                tableBody.innerHTML = "";
+                fillTable(json["logs"])
+            }
+        });
+    });
 </script>
 </body>
 </html>
