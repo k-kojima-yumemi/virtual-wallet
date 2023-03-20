@@ -38,6 +38,7 @@
             balanceText.textContent = formatBalance(balance);
             if (balance <= 0) {
                 useButton.disabled = true;
+                useButton.title = "使用するにはまずチャージしてください"
             }
         });
 
