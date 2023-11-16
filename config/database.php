@@ -1,5 +1,8 @@
 <?php
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Str;
 
 return [
@@ -62,6 +65,61 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+
+        'rds' => with([], function ($_) {
+            if (env('SECRET_ID') === null) return [];
+            try {
+                $secretId = env("SECRET_ID");
+                $header = [
+                    "X-Aws-Parameters-Secrets-Token" => env('AWS_SESSION_TOKEN')
+                ];
+                $count = 0;
+                do {
+                    $count += 1;
+                    try {
+                        $request = new Request("GET",
+                            "http://localhost:2773/secretsmanager/get?secretId=".urlencode($secretId),
+                            $header);
+                        $client = new Client();
+                        $response = $client->send($request);
+                        $body = $response->getBody();
+                        $result = json_decode($body, true);
+                    } catch (GuzzleException $e) {
+                        $message = $e->getMessage();
+                        echo "HTTP error Message: $message".PHP_EOL;
+                        $result = null;
+                        sleep(3);
+                    }
+                } while ($result !== null && $count < 10);
+                if ($result === null) {
+                    echo "Failed to get secret.".PHP_EOL;
+                    return [];
+                }
+
+                $secret = json_decode($result["SecretString"], true);
+                return [
+                    'driver' => 'mysql',
+                    'host' => $secret["host"],
+                    'port' => $secret["port"],
+                    'database' => env('DB_DATABASE', 'forge'),
+                    'username' => $secret["username"],
+                    'password' => $secret["password"],
+                    'charset' => 'utf8mb4',
+                    'collation' => 'utf8mb4_unicode_ci',
+                    'prefix' => '',
+                    'prefix_indexes' => true,
+                    'strict' => true,
+                    'engine' => null,
+                    'options' => extension_loaded('pdo_mysql') ? array_filter([
+                        PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                    ]) : [],
+                ];
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                echo "ERROR in getting connection info from secret manager. Message: $message".PHP_EOL;
+                return [];
+            }
+        }),
 
         'pgsql' => [
             'driver' => 'pgsql',
