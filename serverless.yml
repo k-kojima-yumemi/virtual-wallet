@@ -1,0 +1,37 @@
+service: 'virtual-wallet-lambda'
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: ap-northeast-1
+
+plugins:
+  - ./vendor/bref/bref
+
+package:
+  # Files and directories to exclude from deployment
+  patterns:
+    - '!node_modules/**'
+    - '!public/storage'
+    - '!resources/assets/**'
+    - '!storage/**'
+    - '!tests/**'
+    - '!.idea/**'
+    - '!.github/**'
+    - '!.env*'
+
+functions:
+  main:
+    handler: public/index.php
+    # Provided by plugin
+    # noinspection YAMLSchemaValidation
+    runtime: php-81-fpm
+    url:
+      authorizer: aws_iam
+  artisan:
+    handler: artisan
+    # Provided by plugin
+    # noinspection YAMLSchemaValidation
+    runtime: php-81-console
+    timeout: 720
