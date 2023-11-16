@@ -2,36 +2,41 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Charge</title>
-    <link href="/all.css" rel="stylesheet">
+    <title>Use</title>
+    <link href="{{asset('/all.css')}}" rel="stylesheet">
 </head>
 <body>
 <div class="content">
     <header>
-        チャージ
+        残高の使用
     </header>
-    <form class="form-charge" id="charge-form">
+    <form class="form-use" id="use-form">
         <div class="form-row center">
-            <label for="amount">チャージする金額</label>
+            <label for="amount">使用する金額</label>
             <input type="number" name="amount" id="amount" required min="1" placeholder="1000">
         </div>
+        <div class="form-row center ">
+            <label for="description">使用目的</label>
+            <input type="text" name="description" id="description" required minlength="1" placeholder="たこ焼き">
+        </div>
         <div class="form-row center">
-            <input type="submit" value="チャージする" class="btn circle">
+            <input type="submit" value="使用する" class="btn circle">
         </div>
     </form>
 </div>
 
-
 <script>
-    const form = document.getElementById("charge-form");
+    const form = document.getElementById("use-form");
     form.addEventListener("submit", e => {
         e.preventDefault();
         const inputAmount = document.querySelector("input#amount");
+        const inputDescription = document.querySelector("input#description");
         const sendData = JSON.stringify({
-            "amount": inputAmount.value
+            "amount": inputAmount.value,
+            "description": inputDescription.value,
         });
         console.log(sendData);
-        fetch("/api/charge", {
+        fetch("/api/use", {
             "method": "POST",
             "headers": {
                 "Content-Type": "application/json",
