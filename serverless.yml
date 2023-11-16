@@ -5,6 +5,22 @@ frameworkVersion: '3'
 provider:
   name: aws
   region: ap-northeast-1
+  vpc:
+    securityGroupIds:
+      - sg-???
+    subnetIds:
+      - subnet-???
+  environment:
+    DB_CONNECTION: 'rds'
+    SECRET_ID: '???'
+    # DB_HOST: '???.rds.amazonaws.com'
+    # DB_PORT: 3306
+    # DB_USERNAME: ???
+    # DB_PASSWORD: '???'
+    DB_DATABASE: 'k_kojima_lambda_test'
+    LOG_CHANNEL: 'stderr'
+    APP_ENV: 'production'
+    APP_KEY: '???='
 
 plugins:
   - ./vendor/bref/bref
@@ -29,9 +45,13 @@ functions:
     runtime: php-81-fpm
     url:
       authorizer: aws_iam
+    layers:
+      - 'arn:aws:lambda:ap-northeast-1:133490724326:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
   artisan:
     handler: artisan
     # Provided by plugin
     # noinspection YAMLSchemaValidation
     runtime: php-81-console
     timeout: 720
+    layers:
+      - 'arn:aws:lambda:ap-northeast-1:133490724326:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
