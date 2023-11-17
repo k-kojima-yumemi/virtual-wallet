@@ -25,3 +25,8 @@ Route::get('/use', function () {
 Route::get('/logs', function () {
     return view('logs');
 });
+Route::get('/all.css', function () {
+    return response()->file('all.css', [
+        'Content-Type' => 'text/css'
+    ]);
+});

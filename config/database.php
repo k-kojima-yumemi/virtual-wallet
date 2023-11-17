@@ -78,7 +78,7 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA', base_path('vendor/pixelvide/laravel-iam-db-auth/certs/rds-ca-2019-root.pem')),
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA', base_path('resources/certs/global-bundle.pem')),
             ]) : [],
             'aws_region' => env('AWS_REGION'),
             'use_iam_auth' => true,
