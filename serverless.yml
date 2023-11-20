@@ -53,7 +53,7 @@ functions:
       authorizer: aws_iam
     image:
       name: virtual-wallet-kk
-    timeout: 10
+    timeout: 30
 #  artisan:
 #    handler: artisan
 #    # Provided by plugin
