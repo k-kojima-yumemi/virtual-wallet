@@ -11,16 +11,22 @@ provider:
     subnetIds:
       - subnet-???
   environment:
-    DB_CONNECTION: 'rds'
+    # DB_CONNECTION: 'rds_iam'
     SECRET_ID: '???'
     # DB_HOST: '???.rds.amazonaws.com'
     # DB_PORT: 3306
-    # DB_USERNAME: ???
-    # DB_PASSWORD: '???'
+    # DB_USERNAME: k_kojima_wallet
     DB_DATABASE: 'k_kojima_lambda_test'
     LOG_CHANNEL: 'stderr'
     APP_ENV: 'production'
-    APP_KEY: '???='
+    APP_KEY: 'base64:???'
+  ecr:
+    images:
+      virtual-wallet-kk:
+        path: ./
+        file: 'docker/Dockerfile'
+        buildArgs:
+          { }
 
 plugins:
   - ./vendor/bref/bref
@@ -39,19 +45,18 @@ package:
 
 functions:
   main:
-    handler: public/index.php
+    # handler: public/index.php
     # Provided by plugin
     # noinspection YAMLSchemaValidation
-    runtime: php-81-fpm
+    # runtime: php-81-fpm
     url:
       authorizer: aws_iam
-    layers:
-      - 'arn:aws:lambda:ap-northeast-1:133490724326:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
-  artisan:
-    handler: artisan
-    # Provided by plugin
-    # noinspection YAMLSchemaValidation
-    runtime: php-81-console
-    timeout: 720
-    layers:
-      - 'arn:aws:lambda:ap-northeast-1:133490724326:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
+    image:
+      name: virtual-wallet-kk
+    timeout: 10
+#  artisan:
+#    handler: artisan
+#    # Provided by plugin
+#    # noinspection YAMLSchemaValidation
+#    runtime: php-81-console
+#    timeout: 720

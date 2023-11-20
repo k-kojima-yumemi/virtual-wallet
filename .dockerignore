@@ -4,9 +4,9 @@
 /public/build
 /public/hot
 /public/storage
-/storage/*.key
+/storage
 /vendor
-.env
+.env*
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -21,4 +21,5 @@ yarn-error.log
 /.git
 /.gitignore
 /.gitattributes
-.serverless
+/.serverless
+compose.yaml
