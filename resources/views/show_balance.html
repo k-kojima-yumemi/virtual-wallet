@@ -15,20 +15,20 @@
         <div id="balance-text" class="balance-text"></div>
     </div>
     <div class="wrap">
-        <button class="circle btn " onclick="location.assign('/logs')">使用履歴</button>
+        <button id="logsButton" class="circle btn " onclick="location.assign('/logs')">使用履歴</button>
     </div>
     <div class="wrap-flex">
         <div class="inner-flex">
-            <button class="circle btn" onclick="location.assign('/charge')">チャージ</button>
+            <button id="chargeButton" class="circle btn" onclick="location.assign('/charge')">チャージ</button>
         </div>
         <div class="inner-flex">
-            <button class="circle btn" onclick="location.assign('/use')" id="use_button">使用</button>
+            <button id="useButton" class="circle btn" onclick="location.assign('/use')">使用</button>
         </div>
     </div>
 </div>
 <script>
     const balanceText = document.getElementById("balance-text");
-    const useButton = document.getElementById("use_button");
+    const useButton = document.getElementById("useButton");
     fetch("/api/balance")
         .then((response) => response.json())
         .then((json) => {

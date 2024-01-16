@@ -23,4 +23,16 @@ class MainTest extends DuskTestCase
                 ->assertSee("今の残高");
         });
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function testAccessCharge(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit("/")
+                ->click("#useButton")
+                ->assertPathIs("/use");
+        });
+    }
 }

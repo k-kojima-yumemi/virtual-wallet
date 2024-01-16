@@ -83,3 +83,10 @@ jobs:
         run: php artisan dusk
         env:
           APP_URL: 'http://localhost:8000'
+      - name: Upload Screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: virtual-wallet-screenshots-${{ github.run_number }}
+          path: tests/Browser/screenshots
+          if-no-files-found: ignore
