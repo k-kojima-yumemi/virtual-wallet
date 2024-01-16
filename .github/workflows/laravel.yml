@@ -44,7 +44,7 @@ jobs:
     - name: Check containers
       run: docker compose ps
     - name: Migration DB
-      run: ./vendor/bin/sail php artisan migrate:fresh --seed
+      run: ./vendor/bin/sail php artisan migrate:fresh
     - name: Test
       run: ./vendor/bin/sail test
     - name: Sail down
