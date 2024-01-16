@@ -73,6 +73,7 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Upgrade Chrome Driver
         run: php artisan dusk:chrome-driver --detect
+      - run: php artisan key:generate
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Run Laravel Server
