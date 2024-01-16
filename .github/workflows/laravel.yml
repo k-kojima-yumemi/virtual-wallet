@@ -68,6 +68,8 @@ jobs:
       - name: Migrate
         run: php artisan migrate:fresh --seed
         env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
           DB_DATABASE: dusk_test_db
           DB_USERNAME: root
           DB_PASSWORD: root
