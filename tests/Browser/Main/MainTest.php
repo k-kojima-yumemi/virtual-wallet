@@ -49,13 +49,58 @@ class MainTest extends DuskTestCase
     /**
      * @throws Throwable
      */
+    public function testLoadChargePage(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit("/charge")
+                ->assertSee("チャージする金額");
+        });
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testLoadLogPage(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit("/logs")
+                ->assertSee("使用履歴");
+        });
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testAccessCharge(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit("/")
-                ->click("#useButton")
-                ->waitForText("残高の使用", 5)
+                ->clickAndWaitForReload("#chargeButton")
+                ->assertPathIs("/charge");
+        });
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testAccessUse(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit("/")
+                ->clickAndWaitForReload("#useButton")
                 ->assertPathIs("/use");
+        });
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testAccessLog(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit("/")
+                ->clickAndWaitForReload("#logsButton")
+                ->assertPathIs("/logs");
         });
     }
 }
