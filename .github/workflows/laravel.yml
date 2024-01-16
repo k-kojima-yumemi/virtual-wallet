@@ -71,6 +71,10 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Install Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Link to driver
+        run: |
+          mkdir -p vendor/laravel/dusk/bin/
+          ln -s "${CHROMEWEBDRIVER}" vendor/laravel/dusk/bin/chromedriver-linux
       - name: Migrate
         run: php artisan migrate:fresh --seed
       - name: Run test
