@@ -76,8 +76,10 @@ jobs:
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Run Laravel Server
-        run: php artisan serve --no-reload &
+        run: php artisan serve --no-reload --host=localhost --port=8000 &
       - name: Migrate
         run: php artisan migrate:fresh --seed
       - name: Run test
         run: php artisan dusk
+        env:
+          APP_URL: 'http://localhost:8000'
