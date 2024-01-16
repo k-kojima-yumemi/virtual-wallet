@@ -60,6 +60,8 @@ jobs:
       DB_DATABASE: dusk_test_db
       DB_USERNAME: root
       DB_PASSWORD: root
+      SESSION_DRIVER: array
+      CACHE_DRIVER: array
     steps:
       - uses: shivammathur/setup-php@v2
         with:
@@ -77,11 +79,11 @@ jobs:
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux &
       - name: Run Laravel Server
-        run: php artisan serve --no-reload --host=localhost --port=8000 &
+        run: php artisan serve --env=dusk.testing --no-reload --host=localhost --port=8000 &
       - name: Migrate
-        run: php artisan migrate:fresh --seed
+        run: php artisan migrate --env=dusk.testing
       - name: Run test
-        run: php artisan dusk
+        run: php artisan dusk --env=testing --testdox --colors=always
         env:
           APP_URL: 'http://localhost:8000'
       - name: Upload Screenshots
