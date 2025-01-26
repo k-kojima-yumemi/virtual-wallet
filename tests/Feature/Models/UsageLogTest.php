@@ -5,6 +5,7 @@ namespace Tests\Feature\Models;
 use App\Models\UsageLog;
 use Database\Seeders\UsageLogSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class UsageLogTest extends TestCase
@@ -21,18 +22,18 @@ class UsageLogTest extends TestCase
      * 指定したユーザーの残高が正確に取得できていることを確認する
      * 何も入っていないユーザー(99)、残高がマイナスのユーザー(3)、プラスのユーザー(100)で検証
      *
-     * @dataProvider userIdAndBalance
      * @param int $userId
      * @param int $expectedBalance
      * @return void
      */
+    #[DataProvider("userIdAndBalance")]
     public function test_get_balance(int $userId, int $expectedBalance): void
     {
         $this->assertSame($expectedBalance, UsageLog::getUserBalance($userId),
             "User $userId");
     }
 
-    public function userIdAndBalance(): array
+    public static function userIdAndBalance(): array
     {
         // array of userId, expected-Balance
         return array(

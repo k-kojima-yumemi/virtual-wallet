@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Browser\Main;
+namespace Tests\Browser\Main;
 
 use Database\Seeders\UsageLogSeeder;
 use Database\Seeders\UserSeeder;
