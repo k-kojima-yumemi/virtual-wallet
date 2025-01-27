@@ -11,7 +11,7 @@ const App: FC = () => {
     const hasNoBalance = () => setCanUse(false);
 
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div id="showBalanceContainer" className="flex flex-col items-center gap-4">
             <BalanceHeader/>
             <Balance onHasBalance={hasBalance} onHasNoBalance={hasNoBalance}/>
             <div className="wrap">

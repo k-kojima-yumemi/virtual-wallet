@@ -40,7 +40,7 @@ services:
             test: "mysqladmin ping -p${DB_PASSWORD}"
             retries: 3
             timeout: 5s
-            start_interval: 1s
+            start_interval: 3s
             start_period: 20s
             interval: 10s
 networks:

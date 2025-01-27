@@ -31,6 +31,7 @@ class MainTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit("/")
+                ->waitFor("#showBalanceContainer")
                 ->assertSee("今の残高");
         });
     }
@@ -75,6 +76,7 @@ class MainTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit("/")
+                ->waitFor("#showBalanceContainer")
                 ->clickAndWaitForReload("#chargeButton")
                 ->assertPathIs("/charge");
         });
@@ -87,6 +89,7 @@ class MainTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit("/")
+                ->waitFor("#showBalanceContainer")
                 ->clickAndWaitForReload("#useButton")
                 ->assertPathIs("/use");
         });
@@ -99,6 +102,7 @@ class MainTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit("/")
+                ->waitFor("#showBalanceContainer")
                 ->clickAndWaitForReload("#logsButton")
                 ->assertPathIs("/logs");
         });

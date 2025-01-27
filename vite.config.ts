@@ -6,7 +6,7 @@ import {defineConfig} from "vite";
 
 const tsFiles = fs
     .readdirSync("resources/ts")
-    .filter((f) => f.endsWith(".ts"))
+    .filter((f) => f.endsWith(".ts") || f.endsWith(".tsx"))
     .map((f) => `resources/ts/${f}`);
 const cssFiles = fs
     .readdirSync("resources/css")
