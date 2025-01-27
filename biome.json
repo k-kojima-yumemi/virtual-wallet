@@ -1,53 +1,48 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-    "files": {
-        "include": [
-            "./resources/**/*.ts",
-            "./resources/**/*.tsx",
-            "package.json",
-            "./*.ts"
-        ],
-        "ignore": [
-            "vendor",
-            "node_modules"
-        ]
-    },
-    "organizeImports": {
-        "enabled": true
-    },
-    "linter": {
-        "enabled": true,
-        "rules": {
-            "recommended": true,
-            "correctness": {
-                "noUnusedImports": "error",
-                "noUnusedVariables": "error",
-                "noUnusedFunctionParameters": "error"
-            },
-            "nursery": {
-                "useSortedClasses": "error"
-            },
-            "complexity": {
-                "useLiteralKeys": {
-                    "level": "off",
-                    "fix": "none"
-                }
-            }
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "files": {
+    "include": [
+      "./resources/**/*.ts",
+      "./resources/**/*.tsx",
+      "package.json",
+      "./*.ts"
+    ],
+    "ignore": ["vendor", "node_modules"]
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noUnusedFunctionParameters": "error"
+      },
+      "nursery": {
+        "useSortedClasses": "error"
+      },
+      "complexity": {
+        "useLiteralKeys": {
+          "level": "off",
+          "fix": "none"
         }
-    },
-    "formatter": {
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 4
+  },
+  "overrides": [
+    {
+      "include": ["**/*.json"],
+      "formatter": {
         "indentStyle": "space",
-        "indentWidth": 4
-    },
-    "overrides": [
-        {
-            "include": [
-                "**/*.json"
-            ],
-            "formatter": {
-                "indentStyle": "space",
-                "indentWidth": 2
-            }
-        }
-    ]
+        "indentWidth": 2
+      }
+    }
+  ]
 }

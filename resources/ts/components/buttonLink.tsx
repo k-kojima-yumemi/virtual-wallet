@@ -1,4 +1,4 @@
-import type {FC} from "react";
+import type { FC } from "react";
 
 type Props = {
     destination: string;
@@ -7,7 +7,7 @@ type Props = {
     enabled: boolean;
 };
 
-export const LinkButton: FC<Props> = ({id, name, destination, enabled}) => {
+export const LinkButton: FC<Props> = ({ id, name, destination, enabled }) => {
     if (enabled) {
         return (
             <div className="flex justify-center">

@@ -1,4 +1,4 @@
-import type {FC} from "react";
+import type { FC } from "react";
 
 type Props = {
     onClick: () => void;
@@ -6,7 +6,7 @@ type Props = {
     id: string;
 };
 
-export const Button: FC<Props> = ({id, name, onClick}) => {
+export const Button: FC<Props> = ({ id, name, onClick }) => {
     return (
         <div className="inner-flex">
             <button

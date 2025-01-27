@@ -1,30 +1,30 @@
 {
-    "private": true,
-    "type": "module",
-    "dependencies": {
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0"
-    },
-    "devDependencies": {
-        "@biomejs/biome": "^1.9.4",
-        "@tailwindcss/vite": "^4.0.0",
-        "@types/node": "^22.10.10",
-        "@types/react": "^19.0.8",
-        "@types/react-dom": "^19.0.3",
-        "@vitejs/plugin-react": "^4.3.4",
-        "laravel-vite-plugin": "^1.2.0",
-        "tailwindcss": "^4.0.0",
-        "typescript": "^5.7.3",
-        "vite": "^6.0.11"
-    },
-    "volta": {
-        "node": "22.13.1",
-        "npm": "10.9.2"
-    },
-    "scripts": {
-        "build": "vite build",
-        "dev": "vite --host",
-        "format": "npx @biomejs/biome check --write --unsafe",
-        "ci": "npx @biomejs/biome ci && (npx tsc --noEmit && echo 'Checked TypeScript')"
-    }
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.10",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "laravel-vite-plugin": "^1.2.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
+  },
+  "volta": {
+    "node": "22.13.1",
+    "npm": "10.9.2"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host",
+    "format": "npx @biomejs/biome check --write --unsafe",
+    "ci": "npx @biomejs/biome ci && (npx tsc --noEmit && echo 'Checked TypeScript')"
+  }
 }
