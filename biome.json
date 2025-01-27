@@ -1,0 +1,51 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+    "files": {
+        "include": [
+            "./resources/**/*.ts",
+            "package.json",
+            "./*.ts"
+        ],
+        "ignore": [
+            "vendor"
+        ]
+    },
+    "organizeImports": {
+        "enabled": true
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "correctness": {
+                "noUnusedImports": "error",
+                "noUnusedVariables": "error",
+                "noUnusedFunctionParameters": "error"
+            },
+            "nursery": {
+                "useSortedClasses": "error"
+            },
+            "complexity": {
+                "useLiteralKeys": {
+                    "level": "off",
+                    "fix": "none"
+                }
+            }
+        }
+    },
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "overrides": [
+        {
+            "include": [
+                "**/*.json"
+            ],
+            "formatter": {
+                "indentStyle": "space",
+                "indentWidth": 2
+            }
+        }
+    ]
+}
