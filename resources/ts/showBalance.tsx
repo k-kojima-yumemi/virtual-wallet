@@ -7,13 +7,17 @@ import {LinkButton} from "./components/buttonLink";
 
 const App: FC = () => {
     const [canUse, setCanUse] = useState(false);
-    const hasBalance = () => setCanUse(true);
-    const hasNoBalance = () => setCanUse(false);
+    const onBalanceChange = useCallback((balance: number) => {
+        setCanUse(balance > 0);
+    }, []);
 
     return (
-        <div id="showBalanceContainer" className="flex flex-col items-center gap-4">
+        <div
+            id="showBalanceContainer"
+            className="flex flex-col items-center gap-4"
+        >
             <BalanceHeader/>
-            <Balance onHasBalance={hasBalance} onHasNoBalance={hasNoBalance}/>
+            <Balance onBalanceChange={onBalanceChange}/>
             <div className="wrap">
                 <LinkButton
                     destination="/logs"

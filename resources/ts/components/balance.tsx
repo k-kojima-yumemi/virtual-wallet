@@ -1,15 +1,14 @@
 import {type FC, useEffect, useState} from "react";
 
 type Props = {
-    onHasBalance?: () => void;
-    onHasNoBalance?: () => void;
+    onBalanceChange?: (balance: number) => void;
 };
 
 type BalanceApi = {
     balance: number;
 };
 
-export const Balance: FC<Props> = ({onHasBalance, onHasNoBalance}) => {
+export const Balance: FC<Props> = ({onBalanceChange}) => {
     const [balance, setBalance] = useState<number>();
     useEffect(() => {
         fetch("/api/balance")
@@ -17,14 +16,11 @@ export const Balance: FC<Props> = ({onHasBalance, onHasNoBalance}) => {
             .then((json: BalanceApi) => {
                 console.log(json);
                 setBalance(json.balance);
-                if (json.balance > 0 && onHasBalance) {
-                    onHasBalance();
-                }
-                if (json.balance <= 0 && onHasNoBalance) {
-                    onHasNoBalance();
+                if (onBalanceChange) {
+                    onBalanceChange(json.balance);
                 }
             });
-    }, [onHasBalance, onHasNoBalance]);
+    }, [onBalanceChange]);
 
     if (balance === undefined) {
         return <div className="min-h-20"/>;
