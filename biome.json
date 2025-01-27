@@ -3,6 +3,7 @@
     "files": {
         "include": [
             "./resources/**/*.ts",
+            "./resources/**/*.tsx",
             "package.json",
             "./*.ts"
         ],

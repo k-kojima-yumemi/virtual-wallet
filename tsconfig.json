@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "strict": true,
+        "skipLibCheck": true,
+        "lib": [
+            "ESNext",
+            "DOM",
+            "dom.iterable"
+        ],
+        "types": [
+            ""
+        ],
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": false,
+        "isolatedModules": true,
+        "jsx": "react-jsx"
+    },
+    "include": [
+        "resources/**/*.ts",
+        "resources/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}

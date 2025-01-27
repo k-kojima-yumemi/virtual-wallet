@@ -1,8 +1,8 @@
-import {defineConfig} from "vite";
-import laravel from 'laravel-vite-plugin';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
 import * as fs from "node:fs";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import laravel from "laravel-vite-plugin";
+import {defineConfig} from "vite";
 
 const tsFiles = fs
     .readdirSync("resources/ts")
@@ -14,14 +14,15 @@ const cssFiles = fs
     .map((f) => `resources/css/${f}`);
 
 export default defineConfig({
+    server: {
+        cors: true,
+    },
     plugins: [
         react(),
         tailwindcss(),
         laravel({
-            input: [
-                ...tsFiles, ...cssFiles,
-            ],
-            refresh: true
-        })
-    ]
+            input: [...tsFiles, ...cssFiles],
+            refresh: true,
+        }),
+    ],
 });
